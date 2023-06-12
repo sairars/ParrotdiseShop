@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ParrotdiseShop.Web.Models;
+using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
 
 namespace ParrotdiseShop.Web.Controllers

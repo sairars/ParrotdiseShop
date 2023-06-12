@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ParrotdiseShop.Persistence.Data;
+
 namespace ParrotdiseShop.Web
 {
     public class Program
@@ -8,6 +11,9 @@ namespace ParrotdiseShop.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
