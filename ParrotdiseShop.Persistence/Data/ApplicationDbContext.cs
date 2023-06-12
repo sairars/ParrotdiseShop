@@ -16,5 +16,6 @@ namespace ParrotdiseShop.Persistence.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+
     }
 }

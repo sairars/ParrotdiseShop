@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Persistence.Data;
 
 namespace ParrotdiseShop.Web.Controllers
@@ -15,6 +16,23 @@ namespace ParrotdiseShop.Web.Controllers
         {
             var categoriesSortedByDisplayOrder = _context.Categories.OrderBy(c => c.DisplayOrder);
             return View(categoriesSortedByDisplayOrder);
+        }
+
+        public IActionResult Create()
+        {
+            return View("CategoryForm");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Save(Category category)
+        {
+            if (!ModelState.IsValid)
+                return View("CategoryForm", category);
+            _context.Categories.Add(category);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
