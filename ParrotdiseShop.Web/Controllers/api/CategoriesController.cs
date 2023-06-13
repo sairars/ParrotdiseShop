@@ -16,7 +16,7 @@ namespace ParrotdiseShop.Web.Controllers.api
 
         public IActionResult GetCategoriesBySortedByDisplayOrder()
         {
-            return Ok(_context.Categories.OrderBy(c => c.DisplayOrder));
+            return Ok(_context.Categories);
         }
     }
 }

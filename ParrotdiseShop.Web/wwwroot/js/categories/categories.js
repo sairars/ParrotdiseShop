@@ -3,14 +3,22 @@
 });
 
 let loadDataTable = function () {
-    table = container.DataTable({
+    table = $('#Categories').DataTable({
+        order: [[1, 'asc']],
         ajax: {
             url: '/api/categories',
             dataSrc: ''
         },
         columns: [
-            { data: 'name' },
-            { data: 'displayorder' }
+            {
+                data: 'name',
+                render: function (data, type, category) {
+                    return `<a href="/Categories/Edit/${category.id}">${data}</a>`;
+                }
+            },
+            {
+                data: 'displayOrder'
+            }
         ]
     });
 };
