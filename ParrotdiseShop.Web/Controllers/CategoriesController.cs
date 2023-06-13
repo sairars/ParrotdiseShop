@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ParrotdiseShop.Core.Dtos;
+using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using ParrotdiseShop.Persistence.Data;
 using System.Reflection;
@@ -11,7 +13,7 @@ namespace ParrotdiseShop.Web.Controllers
 
         public CategoriesController(ApplicationDbContext context)
         {
-                _context = context;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -22,7 +24,7 @@ namespace ParrotdiseShop.Web.Controllers
         {
             var viewModel = new CategoryFormViewModel
             {
-                Category = new(),
+                CategoryDto = new(),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = true
             };
@@ -37,9 +39,16 @@ namespace ParrotdiseShop.Web.Controllers
             if (categoryFromDb == null)
                 return NotFound();
 
+            var categoryDto = new CategoryDto
+            {
+                Id = categoryFromDb.Id,
+                Name = categoryFromDb.Name,
+                DisplayOrder = categoryFromDb.DisplayOrder
+            };
+
             var viewModel = new CategoryFormViewModel 
             {
-                Category = categoryFromDb,
+                CategoryDto = categoryDto,
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = true
             };
@@ -54,18 +63,21 @@ namespace ParrotdiseShop.Web.Controllers
             if (!ModelState.IsValid)
                 return View("CategoryForm", viewModel);
 
-            var category = viewModel.Category;
-            if (category.Id == 0) 
-                _context.Categories.Add(viewModel.Category);
+            var categoryDto = viewModel.CategoryDto;
+
+            if (categoryDto.Id == 0) 
+                _context.Categories.Add(new Category 
+                            {
+                                Id = categoryDto.Id,
+                                Name = categoryDto.Name,
+                                DisplayOrder = categoryDto.DisplayOrder
+                            });
             else
             {
-                var categoryFromDb = _context.Categories.SingleOrDefault(c => c.Id == category.Id);
-
-                if (categoryFromDb == null)
-                    return NotFound();
+                var categoryFromDb = _context.Categories.Single(c => c.Id == categoryDto.Id);
                 
-                categoryFromDb.Name = category.Name;
-                categoryFromDb.DisplayOrder = category.DisplayOrder;
+                categoryFromDb.Name = categoryDto.Name;
+                categoryFromDb.DisplayOrder = categoryDto.DisplayOrder;
             }
 
             _context.SaveChanges();

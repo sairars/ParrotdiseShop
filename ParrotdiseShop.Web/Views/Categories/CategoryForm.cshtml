@@ -7,11 +7,11 @@
 <form method="post" asp-action="Save">
     @if (Model.IsEdit)
     {
-        <input hidden asp-for="Category.Id" />
+        <input hidden asp-for="CategoryDto.Id" />
     }
     else
     {
-        <input hidden asp-for="Category.Id" value="0" />
+        <input hidden asp-for="CategoryDto.Id" value="0" />
     }
     <div class="border p-3 mt-4">
         <div class="row pb-2">
@@ -19,14 +19,14 @@
             <hr />
         </div>
         <div class="mb-3 row">
-            <label asp-for="Category.Name">Name</label>
-            <input asp-for="Category.Name" class="form-control" />
-            <span asp-validation-for="Category.Name" class="text-danger"></span>
+            <label asp-for="CategoryDto.Name">Name</label>
+            <input asp-for="CategoryDto.Name" class="form-control" />
+            <span asp-validation-for="CategoryDto.Name" class="text-danger"></span>
         </div>
         <div class="mb-3 row">
-            <label asp-for="Category.DisplayOrder">Display Order</label>
-            <input asp-for="Category.DisplayOrder" class="form-control" />
-            <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
+            <label asp-for="CategoryDto.DisplayOrder">Display Order</label>
+            <input asp-for="CategoryDto.DisplayOrder" class="form-control" />
+            <span asp-validation-for="CategoryDto.DisplayOrder" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-6 col-md-3">

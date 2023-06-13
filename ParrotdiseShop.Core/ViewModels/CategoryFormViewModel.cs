@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Dtos;
 
 namespace ParrotdiseShop.Core.ViewModels
 {
     public class CategoryFormViewModel
     {
-        public Category Category { get; set; }
+        public CategoryDto CategoryDto { get; set; }
 
         [ValidateNever]
         public string Heading { get; set; }
