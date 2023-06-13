@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
@@ -10,10 +11,12 @@ namespace ParrotdiseShop.Web.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -39,12 +42,7 @@ namespace ParrotdiseShop.Web.Controllers
             if (categoryFromDb == null)
                 return NotFound();
 
-            var categoryDto = new CategoryDto
-            {
-                Id = categoryFromDb.Id,
-                Name = categoryFromDb.Name,
-                DisplayOrder = categoryFromDb.DisplayOrder
-            };
+            var categoryDto = _mapper.Map<CategoryDto>(categoryFromDb);
 
             var viewModel = new CategoryFormViewModel 
             {
@@ -65,19 +63,20 @@ namespace ParrotdiseShop.Web.Controllers
 
             var categoryDto = viewModel.CategoryDto;
 
-            if (categoryDto.Id == 0) 
-                _context.Categories.Add(new Category 
-                            {
-                                Id = categoryDto.Id,
-                                Name = categoryDto.Name,
-                                DisplayOrder = categoryDto.DisplayOrder
-                            });
+
+            if (categoryDto.Id == 0)
+            {
+                var category = _mapper.Map<Category>(categoryDto);
+                _context.Categories.Add(category);
+            }
             else
             {
-                var categoryFromDb = _context.Categories.Single(c => c.Id == categoryDto.Id);
-                
-                categoryFromDb.Name = categoryDto.Name;
-                categoryFromDb.DisplayOrder = categoryDto.DisplayOrder;
+                var categoryInDb = _context.Categories.SingleOrDefault(c => c.Id == categoryDto.Id);
+
+                if (categoryInDb == null)
+                    return NotFound();
+
+                _mapper.Map(categoryDto, categoryInDb);
             }
 
             _context.SaveChanges();
