@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
@@ -10,12 +11,12 @@ namespace ParrotdiseShop.Web.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CategoriesController(ApplicationDbContext context, IMapper mapper)
+        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
         public IActionResult Index()
@@ -37,7 +38,7 @@ namespace ParrotdiseShop.Web.Controllers
 
         public IActionResult Edit(int id)
         {
-            var categoryFromDb = _context.Categories.SingleOrDefault(c => c.Id == id);
+            var categoryFromDb = _unitOfWork.Categories.Get(c => c.Id == id);
 
             if (categoryFromDb == null)
                 return NotFound();
@@ -67,11 +68,11 @@ namespace ParrotdiseShop.Web.Controllers
             if (categoryDto.Id == 0)
             {
                 var category = _mapper.Map<Category>(categoryDto);
-                _context.Categories.Add(category);
+                _unitOfWork.Categories.Add(category);
             }
             else
             {
-                var categoryInDb = _context.Categories.SingleOrDefault(c => c.Id == categoryDto.Id);
+                var categoryInDb = _unitOfWork.Categories.Get(c => c.Id == categoryDto.Id);
 
                 if (categoryInDb == null)
                     return NotFound();
@@ -79,7 +80,7 @@ namespace ParrotdiseShop.Web.Controllers
                 _mapper.Map(categoryDto, categoryInDb);
             }
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index));
         }

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using ParrotdiseShop.Core;
+using ParrotdiseShop.Persistence;
 using ParrotdiseShop.Persistence.Data;
 
 namespace ParrotdiseShop.Web
@@ -16,6 +18,7 @@ namespace ParrotdiseShop.Web
                                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Persistence.Data;
@@ -11,17 +12,17 @@ namespace ParrotdiseShop.Web.Controllers.api
     public class CategoriesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesController(ApplicationDbContext context, IMapper mapper)
+        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public IActionResult GetCategoriesBySortedByDisplayOrder()
+        public IActionResult GetCategories()
         {
-            var categories = _context.Categories;
+            var categories = _unitOfWork.Categories.GetAll();
             
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
