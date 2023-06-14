@@ -39,7 +39,7 @@ namespace ParrotdiseShop.Web.Controllers.api
             _unitOfWork.Categories.Remove(categoryInDb);
             _unitOfWork.Complete();
 
-            return Ok();
+            return Ok("Category deleted successfully");
         }
     }
 }

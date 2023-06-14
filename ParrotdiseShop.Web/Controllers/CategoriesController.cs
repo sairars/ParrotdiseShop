@@ -69,6 +69,9 @@ namespace ParrotdiseShop.Web.Controllers
             {
                 var category = _mapper.Map<Category>(categoryDto);
                 _unitOfWork.Categories.Add(category);
+                _unitOfWork.Complete();
+
+                TempData["success"] = "Product created successfully";
             }
             else
             {
@@ -78,9 +81,10 @@ namespace ParrotdiseShop.Web.Controllers
                     return NotFound();
 
                 _mapper.Map(categoryDto, categoryInDb);
-            }
+                _unitOfWork.Complete();
 
-            _unitOfWork.Complete();
+                TempData["success"] = "Product updated successfully";
+            }
 
             return RedirectToAction(nameof(Index));
         }
