@@ -20,11 +20,26 @@ namespace ParrotdiseShop.Web.Controllers.api
             _mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult GetCategories()
         {
             var categories = _unitOfWork.Categories.GetAll();
             
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var categoryInDb = _unitOfWork.Categories.Get(c => c.Id == id);
+
+            if (categoryInDb == null)
+                return NotFound();
+
+            _unitOfWork.Categories.Remove(categoryInDb);
+            _unitOfWork.Complete();
+
+            return Ok();
         }
     }
 }
