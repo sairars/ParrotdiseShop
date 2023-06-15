@@ -7,8 +7,9 @@ using ParrotdiseShop.Core.ViewModels;
 using ParrotdiseShop.Persistence.Data;
 using System.Reflection;
 
-namespace ParrotdiseShop.Web.Controllers
+namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -45,7 +46,7 @@ namespace ParrotdiseShop.Web.Controllers
 
             var categoryDto = _mapper.Map<CategoryDto>(categoryFromDb);
 
-            var viewModel = new CategoryFormViewModel 
+            var viewModel = new CategoryFormViewModel
             {
                 CategoryDto = categoryDto,
                 Heading = MethodBase.GetCurrentMethod().Name,

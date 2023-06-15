@@ -5,10 +5,11 @@ using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Persistence.Data;
 
-namespace ParrotdiseShop.Web.Controllers.api
+namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 {
     [Route("/api/[controller]")]
     [ApiController]
+    [Area("Admin")]
     public class CategoriesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -24,7 +25,7 @@ namespace ParrotdiseShop.Web.Controllers.api
         public IActionResult GetCategories()
         {
             var categories = _unitOfWork.Categories.GetAll();
-            
+
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
 

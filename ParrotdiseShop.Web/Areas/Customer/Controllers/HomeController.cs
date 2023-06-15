@@ -2,8 +2,9 @@
 using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
 
-namespace ParrotdiseShop.Web.Controllers
+namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
