@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
-using ParrotdiseShop.Persistence.Data;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 {
-    [Route("/api/[controller]")]
+    [Route("/admin/api/[controller]")]
     [ApiController]
     [Area("Admin")]
     public class CategoriesController : ControllerBase

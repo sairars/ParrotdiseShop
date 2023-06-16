@@ -8,14 +8,14 @@ let loadDataTable = function (container) {
     table = container.DataTable({
         order: [[1, 'asc']],
         ajax: {
-            url: '/api/categories',
+            url: '/admin/api/categories',
             dataSrc: ''
         },
         columns: [
             {
                 data: 'name',
                 render: function (data, type, category) {
-                    return `<a href="/Categories/Edit/${category.id}">${data}</a>`;
+                    return `<a href="/Admin/Categories/Edit/${category.id}">${data}</a>`;
                 }
             },
             {
@@ -50,7 +50,7 @@ let confirmDeleteCategory = function () {
 let deleteCategory = function (button) {
     let categoryId = button.attr("data-category-id");
     $.ajax({
-        url: "/api/categories/" + categoryId,
+        url: "/admin/api/categories/" + categoryId,
         method: "DELETE"
     })
         .done(function (data) {
