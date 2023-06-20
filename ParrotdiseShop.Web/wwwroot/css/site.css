@@ -19,16 +19,29 @@ body {
 
 /*bootstrap overrides*/
 
+a {
+    color: rgba(64, 115, 18, var(--bs-link-opacity, 1));
+}
+
+    a:hover {
+        color: rgba(117, 209, 36,1);
+    }
+label {
+    font-size: 1.1rem;
+}
+
+footer a {
+    color: #edca07;
+}
+
+    footer a:hover {
+        color: #ffd800;
+    }
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -62,63 +75,55 @@ button.accept-policy {
     line-height: 60px;
 }
 
-footer  a {
-    color: #ffd800;
-}
-
-    footer a:hover {
-        color: #ffc400;
-    }
-
 .bg-primary {
-    background-color: #4d8a17 !important;
+    background-color: #61b33b !important;
 }
 
 .bg-secondary {
-    background-color: #fd7e14 !important;
+    background-color: #009bb3 !important;
 }
-
-a {
-    color: rgba(64, 115, 18, var(--bs-link-opacity, 1));
-    text-decoration: underline;
-}
-
-a:hover {
-    color: rgba(117, 209, 36,1);
-}
-
 
 .text-primary {
     color: #4d8a17 !important;
 }
 
-
 .btn-primary {
-    color: #fff;
-    background-color: #4d8a17;
-    border-color: #4d8a17;
+    background-color: #61b33b;
+    border-color: #61b33b;
 }
 
     .btn-primary:hover {
-        color: #fff;
-        background-color: #2e520f;
-        border-color: #2e520f;
+        background-color: #449448;
+        border-color: #449448;
     }
 
-
-.btn-outline-primary {
-    color: #fd7e14;
-    border-color: #fd7e14;
+.btn-secondary {
+    border-color: #e8b415; 
+    background-color: #e8b415;
 }
 
-
-
-    .btn-outline-primary:hover {
-        color: #fff;
-        background-color: #fd7e14;
-        border-color: #fd7e14;
+    .btn-secondary:hover {
+        background-color: #dbab14;
+        border-color: #dbab14;
     }
 
-label {
-    font-size: 1.1rem;
+.btn-danger {
+    background-color: #de3b0d;
+}
+
+    .btn-danger:hover {
+        background-color: #ba320b;
+    }
+
+.dropdown-menu {
+    background-color: #fff;
+    border-color: #b5b4b4;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #f89880;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #009bb3;
 }
