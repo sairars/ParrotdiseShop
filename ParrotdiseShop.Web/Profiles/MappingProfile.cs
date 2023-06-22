@@ -4,12 +4,15 @@ using ParrotdiseShop.Core.Models;
 
 namespace ParrotdiseShop.Web.Profiles
 {
-    public class CategoryProfile : Profile
+    public class MappingProfile : Profile
     {
-        public CategoryProfile()
+        public MappingProfile()
         {
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>().ForMember(c => c.Id, opt => opt.Ignore());
+
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>().ForMember(p => p.Id, opt => opt.Ignore());
         }
     }
 }

@@ -1,0 +1,93 @@
+﻿@model ProductFormViewModel
+
+@{
+    ViewData["Title"] = Model.Heading;
+}
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">
+                    @Model.Heading Product
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-action="Save" class="row" enctype="multipart/form-data" id="productForm">
+            @if (Model.IsEdit)
+            {
+                <input hidden asp-for="ProductDto.Id" />
+            }
+            else
+            {
+                <input hidden asp-for="ProductDto.Id" value="0" />
+            }
+            <div class="border p-3">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ProductDto.Name" class="form-control" />
+                    <label asp-for="ProductDto.Name" class="ms-3"></label>
+                    <span asp-validation-for="ProductDto.Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <textarea asp-for="ProductDto.Description" rows="3" class="form-control"></textarea>
+                    <label asp-for="ProductDto.Description">Description</label>
+                    <span asp-validation-for="ProductDto.Description" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ProductDto.SKU" class="form-control" />
+                    <label asp-for="ProductDto.SKU" class="ms-2">SKU</label>
+                    <span asp-validation-for="ProductDto.SKU" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ProductDto.UnitPrice" class="form-control" />
+                    <label asp-for="ProductDto.UnitPrice" class="ms-2">Unit Price</label>
+                    <span asp-validation-for="ProductDto.UnitPrice" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ProductDto.UnitsInStock" class="form-control" />
+                    <label asp-for="ProductDto.UnitsInStock" class="ms-2">Units In Stock</label>
+                    <span asp-validation-for="ProductDto.UnitsInStock" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input type="file" id="uploadBox" name="file" asp-for="ProductDto.ImagePath" class="form-control" />
+                    <label asp-for="ProductDto.ImagePath" class="ms-2">Upload Image</label>
+                    <span asp-validation-for="ProductDto.ImagePath" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+
+                    <select asp-for="ProductDto.CategoryId" asp-items="new SelectList(Model.CategoryDtos, nameof(Category.Id), nameof(Category.Name))" class="form-select">
+                        <option selected>Please select one</option>
+                    </select>
+                    <label asp-for="ProductDto.CategoryId" class="ms-2">Category</label>
+                    <span asp-validation-for="ProductDto.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        @if (Model.IsEdit)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Update</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control js-validate-upload">Create</button>
+                        }
+
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="btn btn-secondary border form-control" asp-controller="Products" asp-action="Index">Go Back</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script src="~/js/products/productForm.js"></script>
+}

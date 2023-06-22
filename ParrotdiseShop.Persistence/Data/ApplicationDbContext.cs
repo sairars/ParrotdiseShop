@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParrotdiseShop.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ParrotdiseShop.Persistence.Data
 {
@@ -16,6 +12,7 @@ namespace ParrotdiseShop.Persistence.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
 
     }
 }

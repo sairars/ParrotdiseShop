@@ -4,7 +4,6 @@ using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
-using ParrotdiseShop.Persistence.Data;
 using System.Reflection;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers
@@ -31,7 +30,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
             {
                 CategoryDto = new(),
                 Heading = MethodBase.GetCurrentMethod().Name,
-                IsEdit = true
+                IsEdit = false
             };
 
             return View("CategoryForm", viewModel);
@@ -72,19 +71,19 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
                 _unitOfWork.Categories.Add(category);
                 _unitOfWork.Complete();
 
-                TempData["success"] = "Product created successfully";
+                TempData["success"] = "Category created successfully";
             }
             else
             {
-                var categoryInDb = _unitOfWork.Categories.Get(c => c.Id == categoryDto.Id);
+                var categoryFromDb = _unitOfWork.Categories.Get(c => c.Id == categoryDto.Id);
 
-                if (categoryInDb == null)
+                if (categoryFromDb == null)
                     return NotFound();
 
-                _mapper.Map(categoryDto, categoryInDb);
+                _mapper.Map(categoryDto, categoryFromDb);
                 _unitOfWork.Complete();
 
-                TempData["success"] = "Product updated successfully";
+                TempData["success"] = "Category updated successfully";
             }
 
             return RedirectToAction(nameof(Index));
