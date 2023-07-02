@@ -26,8 +26,9 @@ a {
     a:hover {
         color: rgba(117, 209, 36,1);
     }
+
 label {
-    font-size: 1.1rem;
+    font-size: 0.99rem;
 }
 
 footer a {
