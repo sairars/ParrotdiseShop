@@ -15,7 +15,6 @@ namespace ParrotdiseShop.Core.Models
         [StringLength(20)]
         public string? SKU { get; set; }
 
-        [Range(1, 1000)]
         public decimal UnitPrice { get; set; }
 
         public int UnitsInStock { get; set; }

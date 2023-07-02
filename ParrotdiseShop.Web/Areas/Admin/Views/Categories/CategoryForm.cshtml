@@ -17,22 +17,22 @@
         <form method="post" asp-action="Save" class="row">
             @if (Model.IsEdit)
             {
-                <input hidden asp-for="CategoryDto.Id" />
+                <input hidden asp-for="Category.Id" />
             }
             else
             {
-                <input hidden asp-for="CategoryDto.Id" value="0" />
+                <input hidden asp-for="Category.Id" value="0" />
             }
             <div class="border p-3">
-                <div class="form-floating py-2 col-12">
-                    <input asp-for="CategoryDto.Name" class="form-control"  />
-                    <label asp-for="CategoryDto.Name" class="ms-2">Name</label>
-                    <span asp-validation-for="CategoryDto.Name" class="text-danger"></span>
+                <div class="py-2 col-12">
+                    <label asp-for="Category.Name" class="ms-2 text-muted"></label>
+                    <input asp-for="Category.Name" class="form-control" />
+                    <span asp-validation-for="Category.Name" class="text-danger"></span>
                 </div>
-                <div class="form-floating py-2 col-12">
-                    <input asp-for="CategoryDto.DisplayOrder" class="form-control"/>
-                    <label asp-for="CategoryDto.DisplayOrder" class="ms-2">Display Order</label>
-                    <span asp-validation-for="CategoryDto.DisplayOrder" class="text-danger"></span>
+                <div class="py-2 col-12">
+                    <label asp-for="Category.DisplayOrder" class="ms-2 text-muted"></label>
+                    <input asp-for="Category.DisplayOrder" class="form-control" />
+                    <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">

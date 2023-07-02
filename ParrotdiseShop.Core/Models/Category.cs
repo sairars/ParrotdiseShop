@@ -11,10 +11,6 @@ namespace ParrotdiseShop.Core.Models
         [StringLength(100)]
         public string Name { get; set; }
 
-        [DisplayName("Display Order")]
-        [Range(1, 100, ErrorMessage = "{0} has to be in the range of {1} to {2}")]
-        [Required(ErrorMessage = "The Display Order is required")]
-
-        public int? DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

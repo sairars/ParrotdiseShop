@@ -6,7 +6,7 @@ namespace ParrotdiseShop.Core.ViewModels
 {
     public class ProductFormViewModel
     {
-        public ProductDto? ProductDto { get; set; }
+        public ProductDto ProductDto { get; set; }
 
         [ValidateNever]
         public IEnumerable<CategoryDto> CategoryDtos { get; set; }

@@ -33,6 +33,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
             var viewModel = new ProductFormViewModel
             {
+                ProductDto = new(),
                 CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = false
@@ -64,7 +65,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Save(ProductFormViewModel viewModel, IFormFile? file)
         {
-            if (!ModelState.IsValid)
+             if (!ModelState.IsValid)
                 return View("ProductForm", viewModel);
 
             var productDto = viewModel.ProductDto;

@@ -41,7 +41,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.Product", b =>
@@ -83,7 +83,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.Product", b =>

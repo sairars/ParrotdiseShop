@@ -28,7 +28,6 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
         {
             var viewModel = new CategoryFormViewModel
             {
-                CategoryDto = new(),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = false
             };
@@ -47,7 +46,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
             var viewModel = new CategoryFormViewModel
             {
-                CategoryDto = categoryDto,
+                Category = categoryDto,
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = true
             };
@@ -62,7 +61,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View("CategoryForm", viewModel);
 
-            var categoryDto = viewModel.CategoryDto;
+            var categoryDto = viewModel.Category;
 
 
             if (categoryDto.Id == 0)
