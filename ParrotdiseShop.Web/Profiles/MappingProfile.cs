@@ -12,7 +12,17 @@ namespace ParrotdiseShop.Web.Profiles
             CreateMap<CategoryDto, Category>().ForMember(c => c.Id, opt => opt.Ignore());
 
             CreateMap<Product, ProductDto>();
-            CreateMap<ProductDto, Product>().ForMember(p => p.Id, opt => opt.Ignore());
+            CreateMap<ProductDto, Product>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.ImagePath, opt => opt.MapFrom<CustomImageMapper>());
+        }
+
+        public class CustomImageMapper : IValueResolver<ProductDto, Product, string>
+        {
+            public string Resolve(ProductDto product, Product productFromDb, string imagePath, ResolutionContext context)
+            {
+                return product.ImagePath ?? productFromDb.ImagePath;
+            }
         }
     }
 }

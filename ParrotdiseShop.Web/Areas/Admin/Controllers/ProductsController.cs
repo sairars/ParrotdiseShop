@@ -108,6 +108,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
                     return NotFound();
 
                 _mapper.Map(productDto, productFromDb);
+                
                 _unitOfWork.Complete();
 
                 TempData["success"] = "Product updated successfully";
