@@ -26,5 +26,19 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var productFromDb = _unitOfWork.Products.Get(p => p.Id == id);
+
+            if (productFromDb == null)
+                return NotFound();
+
+            _unitOfWork.Products.Remove(productFromDb);
+            _unitOfWork.Complete();
+
+            return Ok("Product deleted successfully");
+        }
     }
 }

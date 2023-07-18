@@ -30,12 +30,12 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var categoryInDb = _unitOfWork.Categories.Get(c => c.Id == id);
+            var categoryFromDb = _unitOfWork.Categories.Get(c => c.Id == id);
 
-            if (categoryInDb == null)
+            if (categoryFromDb == null)
                 return NotFound();
 
-            _unitOfWork.Categories.Remove(categoryInDb);
+            _unitOfWork.Categories.Remove(categoryFromDb);
             _unitOfWork.Complete();
 
             return Ok("Category deleted successfully");
