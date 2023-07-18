@@ -33,7 +33,6 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
             var viewModel = new ProductFormViewModel
             {
-                ProductDto = new(),
                 CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = false
