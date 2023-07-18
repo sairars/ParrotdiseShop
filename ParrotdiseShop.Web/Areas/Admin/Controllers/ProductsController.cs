@@ -64,8 +64,12 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Save(ProductFormViewModel viewModel, IFormFile? file)
         {
-             if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                var categories = _unitOfWork.Categories.GetAll();
+                viewModel.CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
                 return View("ProductForm", viewModel);
+            }
 
             var productDto = viewModel.ProductDto;
 

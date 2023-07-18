@@ -18,9 +18,10 @@ let validateFileUpload = function () {
     return false;
 }
 
+
 tinymce.init({
     selector: 'textarea',
-    plugins: 'anchor autolink charmap codesample emoticons lists visualblocks wordcount',
+    plugins: 'autolink charmap  lists wordcount',
     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent',
-    statusbar: false
+    elementpath: false
 });

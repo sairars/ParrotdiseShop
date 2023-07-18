@@ -17,8 +17,13 @@ body {
   margin-bottom: 60px;
 }
 
-/*bootstrap overrides*/
+/* Page-Level Styles */
+.img-product {
+    border: 1px solid #bbb9b9;
+    border-radius: 5px;
+}
 
+/*bootstrap overrides*/
 a {
     color: rgba(64, 115, 18, var(--bs-link-opacity, 1));
 }
