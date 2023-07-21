@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ParrotdiseShop.Core;
+using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
 
@@ -7,16 +10,28 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _logger = logger;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            return View();
+            var categories = _unitOfWork.Categories.GetAll();
+
+            var products =  _unitOfWork.Products.GetProductsByCategory(id);
+
+            var viewModel = new ProductsViewModel
+            {
+                ProductDtos = _mapper.Map<IEnumerable<ProductDto>>(products),
+                CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
