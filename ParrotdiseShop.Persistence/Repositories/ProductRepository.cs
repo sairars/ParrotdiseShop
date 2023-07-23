@@ -24,5 +24,13 @@ namespace ParrotdiseShop.Persistence.Repositories
             var products = _context.Products.Where(p => id == 0 || p.CategoryId == id);
             return products;
         }
+
+        public Product? GetProductWithCategory(int id)
+        {
+            var product = _context.Products
+                                    .Include(p => p.Category)
+                                    .SingleOrDefault(p => p.Id == id);
+            return product;
+        }
     }
 }

@@ -6,20 +6,20 @@
 <div class="row my-5">
     <div class="col-md-12 text-center">
         <ul class="list-group list-group-horizontal center-pills">
-            <a class="category-links" asp-controller="Home" asp-action="Index" asp-route-id="0">
-                <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
-                    data-category-id="0">
-                    All
-                </li>
+            <a class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="0">
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
+                data-category-id="0">
+                All
+            </li>
             </a>
 
             @foreach (var category in Model.CategoryDtos)
             {
-                <a class="category-links" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
-                        data-category-id="@category.Id">
-                            @category.Name
-                    </li>
+                <a class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
+                <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
+                    data-category-id="@category.Id">
+                    @category.Name
+                </li>
                 </a>
             }
         </ul>
@@ -29,19 +29,27 @@
 <div class="row">
     @foreach (var product in Model.ProductDtos)
     {
+        var inStock = (product.UnitsInStock >= 1);
+
         <div class="col-lg-3 col-sm-6">
             <div class="row">
                 <div class="col-12">
                     <div class="card border-0 p-3">
-                        <div class="ratio ratio-16x9">
-                            <img src="@product.ImagePath" class="card-img-top">
+                        <div class="border">
+                            <img src="@product.ImagePath" class="card-img-top p-5">
                         </div>
-                        <div class="card-body">
-                            <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Name</p>
-                            <p class="text-dark opacity-75 text-uppercase text-center">@product.UnitPrice.ToString("c")</p>
-                            <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id" 
-                                class="stretched-link">
-                            </a>
+                        <div class="card-body text-center">
+                            <p class="card-title my-3">@product.Name</p>
+                            <p class="card-title">@(inStock? "In Stock" : "Out Of Stock")</p>
+
+                            @if (inStock)
+                            {
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id" class="stretched-link btn bg-primary-subtle rounded-pill text-center text-black fw-semibold">@product.UnitPrice.ToString("c")</a>
+                            }
+                            else
+                            {
+                                <a class="disabled stretched-link btn bg-primary-subtle rounded-pill text-center text-black fw-semibold border-0">@product.UnitPrice.ToString("c")</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -51,8 +59,8 @@
 </div>
 
 
-  @section Scripts {
-      <script>
+@section Scripts {
+    <script>
 
         $(document).ready(function () {
 
@@ -61,16 +69,16 @@
             let url = new URL(href);
 
             let selectedCategoryId = url.pathname.slice(-1);
-            
+
             $('.list-group-item').each(function () {
                 $(this).removeClass("active");
-                
+
                 let thisCategoryId = $(this).attr('data-category-id');
 
                 if ((thisCategoryId == "0" && selectedCategoryId == "/") || thisCategoryId == selectedCategoryId) {
                     $(this).addClass("active");
                 }
-            }); 
+            });
         });
-      </script>
-  }                              
+    </script>
+}                              

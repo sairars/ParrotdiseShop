@@ -34,6 +34,17 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
+        public IActionResult Details(int id)
+        {
+            var productFromDb = _unitOfWork.Products.GetProductWithCategory(id);
+
+            if (productFromDb == null)
+                return NotFound();
+
+            var productDto = _mapper.Map<ProductDto>(productFromDb);
+            return View(productDto);
+        }
+
         public IActionResult Privacy()
         {
             return View();

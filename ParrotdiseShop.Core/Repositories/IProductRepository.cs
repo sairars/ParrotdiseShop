@@ -6,5 +6,6 @@ namespace ParrotdiseShop.Core.Repositories
     {
         IEnumerable<Product> GetAllProductsWithCategory();
         IEnumerable<Product> GetProductsByCategory(int id);
+        Product? GetProductWithCategory(int id);
     }
 }
