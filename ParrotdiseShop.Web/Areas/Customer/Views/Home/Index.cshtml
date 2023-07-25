@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Home";
 }
-<div class="row my-5">
+<div class="row my-4">
     <div class="col-md-12 text-center">
         <ul class="list-group list-group-horizontal center-pills">
-            <a class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="0">
+            <a class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="0">
             <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
                 data-category-id="0">
                 All
@@ -15,7 +15,7 @@
 
             @foreach (var category in Model.CategoryDtos)
             {
-                <a class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
+                <a class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
                 <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
                     data-category-id="@category.Id">
                     @category.Name
@@ -36,7 +36,7 @@
                 <div class="col-12">
                     <div class="card border-0 p-3">
                         <div class="border">
-                            <img src="@product.ImagePath" class="card-img-top p-5">
+                            <img src="@product.ImagePath" class="card-img-top">
                         </div>
                         <div class="card-body text-center">
                             <p class="card-title my-3">@product.Name</p>
