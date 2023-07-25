@@ -6,21 +6,19 @@
 <div class="row my-4">
     <div class="col-md-12 text-center">
         <ul class="list-group list-group-horizontal center-pills">
-            <a class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="0">
-            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
-                data-category-id="0">
-                All
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-category-id="0">
+                <a class="fw-semibold text-uppercase" asp-controller="Home" asp-action="Index" asp-route-id="0">
+                    All
+                </a>
             </li>
-            </a>
-
+            
             @foreach (var category in Model.CategoryDtos)
             {
-                <a class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase px-0 py-0 border-0" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
-                <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0"
-                    data-category-id="@category.Id">
-                    @category.Name
+                <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-category-id="@category.Id">
+                    <a class="fw-semibold text-uppercase" asp-controller="Home" asp-action="Index" asp-route-id="@category.Id">
+                        @category.Name
+                    </a>
                 </li>
-                </a>
             }
         </ul>
     </div>

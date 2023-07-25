@@ -140,6 +140,13 @@ button.accept-policy {
     background-color: #009bb3;
 }
 
+.list-group-item > a {
+    text-decoration: none;
+}
+
+.list-group-item.active > a {
+    color: #fff;
+}
 .center-pills {
     display: flex;
     justify-content: center;
