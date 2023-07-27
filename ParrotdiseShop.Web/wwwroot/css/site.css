@@ -160,3 +160,7 @@ button.accept-policy {
     cursor: not-allowed;
     pointer-events: all !important;
 }
+
+.form-floating > label {
+    font-size: 1.1rem;
+}
