@@ -7,22 +7,52 @@
 <h1 class="pt-4 text-primary">@ViewData["Title"]</h1>
 
 <div class="row pt-4">
-    <div class="col-md-7">
+    <div class="col-md-6">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row">
             <h2 class="mb-3 text-primary">Create a new account.</h2>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating py-2 col-12 gx-1">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <input asp-for="Input.Email" class="form-control" aria-required="true" />
                 <label asp-for="Input.Email" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-floating py-2 col-6 gx-1">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
+                <label asp-for="Input.PhoneNumber" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" />
+                <label asp-for="Input.StreetAddress" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.City" class="form-control" aria-required="true" />
+                <label asp-for="Input.City" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.State" class="form-control" aria-required="true" />
+                <label asp-for="Input.State" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.State" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.PostalCode" class="form-control" aria-required="true" />
+                <label asp-for="Input.PostalCode" class="mx-1 my-1"></label>
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6 gx-1">
+                <input asp-for="Input.Password" class="form-control" aria-required="true" />
                 <label asp-for="Input.Password" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-floating py-2 col-6 gx-1">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                <input asp-for="Input.ConfirmPassword" class="form-control" aria-required="true" />
                 <label asp-for="Input.ConfirmPassword" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
@@ -35,7 +65,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-6">
         <section class="ms-2">
             <h2 class="mb-4 text-primary">Use another service to register.</h2>
             @{

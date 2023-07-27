@@ -97,6 +97,20 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             [Display(Name = "Role")]
             public string RoleName { get; set; }
             public IEnumerable<IdentityRole>? Roles { get; set; }
+
+            [Display(Name = "Full Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Street")]
+            public string? StreetAddress { get; set; }
+            public string? City { get; set; }
+            public string? State { get; set; }
+
+            [Display(Name = "Postal Code")]
+            public string? PostalCode { get; set; }
+
+            [Display(Name = "Phone Number")]
+            public string?  PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string? returnUrl = null)
@@ -121,6 +135,14 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.Name = Input.Name;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
