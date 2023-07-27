@@ -4,42 +4,40 @@
     ViewData["Title"] = "Register";
 }
 
-<h2 class="mt-2">@ViewData["Title"]</h2>
+<h1 class="pt-4 text-primary">@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h3>Create a new account.</h3>
-            <hr />
+<div class="row pt-4">
+    <div class="col-md-7">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row">
+            <h2 class="mb-3 text-primary">Create a new account.</h2>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating py-2">
+            <div class="form-floating py-2 col-12 gx-1">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Email"></label>
+                <label asp-for="Input.Email" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <div class="form-floating py-2">
+            <div class="form-floating py-2 col-6 gx-1">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.Password"></label>
+                <label asp-for="Input.Password" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
-            <div class="form-floating py-2">
+            <div class="form-floating py-2 col-6 gx-1">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label asp-for="Input.ConfirmPassword" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-floating py-2">
+            <div class="form-floating py-2 col-6 gx-1">
                 <select id="floatingSelect" asp-for="Input.RoleName" asp-items="new SelectList(@Model.Input.Roles, nameof(IdentityRole.Name), nameof(IdentityRole.Name))" class="form-select">
                     <option selected value="0"> </option>
                 </select>
-                <label asp-for="Input.RoleName"></label>
+                <label asp-for="Input.RoleName" class="mx-1 my-1"></label>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
+    <div class="col-md-5">
+        <section class="ms-2">
+            <h2 class="mb-4 text-primary">Use another service to register.</h2>
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
