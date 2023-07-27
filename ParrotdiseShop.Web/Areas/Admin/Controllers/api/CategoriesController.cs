@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
+using ParrotdiseShop.Core.Models;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 {
     [Route("/admin/api/[controller]")]
     [ApiController]
     [Area("Admin")]
+    [Authorize(Roles = RoleName.Admin)]
     public class CategoriesController : ControllerBase
     {
         private readonly IMapper _mapper;

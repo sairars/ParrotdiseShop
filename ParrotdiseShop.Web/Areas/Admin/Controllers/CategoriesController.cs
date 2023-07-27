@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
@@ -9,6 +10,7 @@ using System.Reflection;
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = RoleName.Admin)]
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

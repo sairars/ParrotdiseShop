@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
+using System.Data;
 using System.Reflection;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = RoleName.Admin)]
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
