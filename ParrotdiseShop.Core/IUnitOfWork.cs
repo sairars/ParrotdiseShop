@@ -1,9 +1,4 @@
 ﻿using ParrotdiseShop.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParrotdiseShop.Core
 {
@@ -11,6 +6,7 @@ namespace ParrotdiseShop.Core
     {
         ICategoryRepository Categories { get; }
         IProductRepository Products { get; }
+        IShoppingCartItemRepository ShoppingCartItems { get; }
         void Complete();
     }
 }

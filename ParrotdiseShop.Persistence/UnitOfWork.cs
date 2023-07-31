@@ -11,6 +11,7 @@ namespace ParrotdiseShop.Persistence
 
         public ICategoryRepository Categories { get; }
         public IProductRepository Products { get; set; }
+        public IShoppingCartItemRepository ShoppingCartItems { get; set; }
 
 
         public UnitOfWork(ApplicationDbContext context)
@@ -18,6 +19,7 @@ namespace ParrotdiseShop.Persistence
             _context = context;
             Categories = new CategoryRepository(_context);
             Products = new ProductRepository(_context);
+            ShoppingCartItems = new ShoppingCartItemRepository(_context);
         }
 
         public void Complete()

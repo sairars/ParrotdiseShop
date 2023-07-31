@@ -26,11 +26,6 @@ namespace ParrotdiseShop.Persistence.Migrations
                                             '{RoleName.Customer}', 
                                             '{RoleName.Customer.ToUpperInvariant()}', 
                                             '{Guid.NewGuid()}')");
-            migrationBuilder.Sql(@$"INSERT INTO AspNetRoles(Id, Name, NormalizedName, ConcurrencyStamp) 
-                                    VALUES('{Guid.NewGuid()}', 
-                                            '{RoleName.Company}', 
-                                            '{RoleName.Company.ToUpperInvariant()}', 
-                                            '{Guid.NewGuid()}')");
         }
 
         /// <inheritdoc />
@@ -39,8 +34,7 @@ namespace ParrotdiseShop.Persistence.Migrations
             migrationBuilder.Sql(@$"DELETE FROM AspNetRoles 
                                     WHERE Name IN ('{RoleName.Admin}', 
                                                     '{RoleName.Employee}', 
-                                                    '{RoleName.Customer}', 
-                                                    '{RoleName.Company}')");
+                                                    '{RoleName.Customer}')");
         }
     }
 }

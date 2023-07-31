@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
+using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
 
@@ -34,15 +36,30 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var productFromDb = _unitOfWork.Products.GetProductWithCategory(id);
 
-            if (productFromDb == null)
+            if (productFromDb == null || productFromDb.UnitsInStock < 1)
                 return NotFound();
 
-            var productDto = _mapper.Map<ProductDto>(productFromDb);
-            return View(productDto);
+            var shoppingCartItem = new ShoppingCartItem
+            {
+                Product = productFromDb,
+                Quantity = 1,
+                ProductId = productFromDb.Id
+            };
+
+            var shoppingCartItemDto = _mapper.Map<ShoppingCartItemDto>(shoppingCartItem);
+
+            var viewModel = new ShoppingCartViewModel
+            {
+                ShoppingCartItemDto = shoppingCartItemDto,
+                Price = productFromDb.UnitPrice
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

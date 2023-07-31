@@ -21,5 +21,10 @@ namespace ParrotdiseShop.Core.Models
         public string ImagePath { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public void UpdateUnitsInStock(int quantity)
+        {
+            UnitsInStock -= quantity;
+        }
     }
 }

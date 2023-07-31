@@ -1,16 +1,21 @@
-﻿@using ParrotdiseShop.Core.Dtos;
-@model ProductDto
+﻿@model ShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Details";
+
+    var max = (Model.ShoppingCartItemDto.Product.UnitsInStock < 1000)
+                ? Model.ShoppingCartItemDto.Product.UnitsInStock
+                : 1000;
 }
 
-<form method="post">
+<form method="post" asp-controller="ShoppingCartItems" asp-action="AddToCart">
+    <input hidden asp-for="ShoppingCartItemDto.Id" value="0" />
+    <input hidden asp-for="ShoppingCartItemDto.ProductId" />
     <div class="card shadow border-0 mt-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Name</h3>
+                    <h3 class="text-white text-uppercase">@Model.ShoppingCartItemDto.Product.Name</h3>
                 </div>
             </div>
         </div>
@@ -26,16 +31,16 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.ImagePath" class="rounded img-fluid" />
+                        <img src="@Model.ShoppingCartItemDto.Product.ImagePath" class="rounded img-fluid" />
                     </div>
                     <div class="col-12 col-lg-6 offset-lg-1">
                         <div class="col-12 col-md-6 pb-4">
-                            <span class="badge">@Model.Category.Name</span>
+                            <span class="badge">@Model.ShoppingCartItemDto.Product.Category.Name</span>
                         </div>
                         <div class="row ps-2">
-                            <p class="text-dark text-opacity-50">SKU : @Model.SKU</p>
-                            <p class="text-dark text-opacity-50">Price: @Model.UnitPrice</p>
-                            @Html.Raw(Model.Description)
+                            <p class="text-dark text-opacity-50">SKU : @Model.ShoppingCartItemDto.Product.SKU</p>
+                            <p class="text-dark text-opacity-50">Price: @Model.ShoppingCartItemDto.Product.UnitPrice</p>
+                            @Html.Raw(Model.ShoppingCartItemDto.Product.Description)
                         </div>
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
@@ -44,20 +49,18 @@
                                           id="inputGroup-sizing-default">
                                         Quantity
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end border-1"/>
+                                    <input type="number" asp-for="ShoppingCartItemDto.Quantity" class="form-control text-end border-1" min="1" max="@max" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" disabled
-                                        class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                    Add to Cart (Comming Soon...)
+                                <button type="submit" class="btn btn-primary w-100 py-2 text-uppercase fw-semibold">
+                                    Add to Cart
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
