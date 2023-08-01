@@ -6,6 +6,7 @@ using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
@@ -51,20 +52,38 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 ProductId = productFromDb.Id
             };
 
-            var shoppingCartItemDto = _mapper.Map<ShoppingCartItemDto>(shoppingCartItem);
-
-            var viewModel = new ShoppingCartViewModel
-            {
-                ShoppingCartItemDto = shoppingCartItemDto,
-                Price = productFromDb.UnitPrice
-            };
-
-            return View(viewModel);
+            return View(shoppingCartItem);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult AddToCart(ShoppingCartItem shoppingCartItem)
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.UserId == userId
+                                                                            && sc.ProductId == shoppingCartItem.ProductId);
+
+            if (shoppingCartItemFromDb != null)
+                shoppingCartItemFromDb.Update(shoppingCartItem.Quantity);
+            else
+            {
+                shoppingCartItem.UserId = userId;
+                _unitOfWork.ShoppingCartItems.Add(_mapper.Map<ShoppingCartItem>(shoppingCartItem));
+            }
+
+            var product = _unitOfWork.Products.Get(p => p.Id == shoppingCartItem.ProductId);
+
+            if (product == null)
+                return NotFound();
+
+            product.UpdateUnitsInStock(shoppingCartItem.Quantity);
+
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
