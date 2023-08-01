@@ -38,6 +38,12 @@
                                 </div>
                             </li>
                         }
+                        <li class="nav-item cart-counter">
+                            <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCartItems" asp-action="Index">
+                                <i class="bi bi-cart"></i>
+                                <span class="invisible badge js-cart-count">0</span>
+                            </a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -62,5 +68,18 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tiny.cloud/1/u04m9oqys95zwduqn4l3khifi5egu5u6p2fkb411y7lg3jah/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $.get("/customer/api/ShoppingCartItems", function (shoppingCartItems) {
+                if (shoppingCartItems.length === 0)
+                    return;
+
+                let badge = $(".js-cart-count");
+                badge
+                    .text(shoppingCartItems.length)
+                    .removeClass("invisible")
+            });
+        });
+    </script>
 </body>
 </html>

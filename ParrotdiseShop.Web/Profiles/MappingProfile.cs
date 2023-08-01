@@ -15,6 +15,8 @@ namespace ParrotdiseShop.Web.Profiles
             CreateMap<ProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.ImagePath, opt => opt.MapFrom<CustomImageMapper>());
+
+            CreateMap<ShoppingCartItem, ShoppingCartItemDto>();
         }
 
         public class CustomImageMapper : IValueResolver<ProductDto, Product, string>

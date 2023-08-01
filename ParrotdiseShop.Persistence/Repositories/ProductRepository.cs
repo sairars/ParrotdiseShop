@@ -15,22 +15,19 @@ namespace ParrotdiseShop.Persistence.Repositories
 
         public IEnumerable<Product> GetAllProductsWithCategory()
         {
-            var products = _context.Products.Include(p => p.Category);
-            return products;
+            return _context.Products.Include(p => p.Category);
         }
 
-        public IEnumerable<Product> GetProductsByCategory(int id)
+        public IEnumerable<Product> GetProductsBy(int categoryId)
         {
-            var products = _context.Products.Where(p => id == 0 || p.CategoryId == id);
-            return products;
+            return _context.Products.Where(p => categoryId == 0 || p.CategoryId == categoryId);
         }
 
         public Product? GetProductWithCategory(int id)
         {
-            var product = _context.Products
+            return _context.Products
                                     .Include(p => p.Category)
                                     .SingleOrDefault(p => p.Id == id);
-            return product;
         }
     }
 }

@@ -19,5 +19,11 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        [Authorize]
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

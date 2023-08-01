@@ -22,11 +22,11 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(int categoryId)
         {
             var categories = _unitOfWork.Categories.GetAll();
 
-            var products =  _unitOfWork.Products.GetProductsByCategory(id);
+            var products =  _unitOfWork.Products.GetProductsBy(categoryId);
 
             var viewModel = new ProductsViewModel
             {

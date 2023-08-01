@@ -6,6 +6,16 @@ namespace ParrotdiseShop.Persistence.Repositories
 {
     public class ShoppingCartItemRepository : Repository<ShoppingCartItem>, IShoppingCartItemRepository
     {
-        public ShoppingCartItemRepository(ApplicationDbContext context) : base(context) { }
+        private readonly ApplicationDbContext _context;
+
+        public ShoppingCartItemRepository(ApplicationDbContext context) : base(context) 
+        { 
+            _context = context;
+        }
+
+        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsBy(string userId)
+        {
+            return _context.ShoppingCartItems.Where(sc => sc.UserId == userId);
+        }
     }
 }
