@@ -7,7 +7,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <span class="text-white py-2 h2">
+                <span class="text-white py-2 h2 text-uppercase">
                     @Model.Heading Product
                 </span>
             </div>
@@ -65,16 +65,16 @@
                             <div class="col-6 col-md-3">
                                 @if (Model.IsEdit)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control">Update</button>
+                                    <button type="submit" class="btn btn-primary form-control text-uppercase">Update</button>
                                 }
                                 else
                                 {
-                                    <button type="submit" class="btn btn-primary form-control js-validate-upload">Create</button>
+                                    <button type="submit" class="btn btn-primary form-control js-validate-upload text-uppercase">Create</button>
                                 }
 
                             </div>
                             <div class="col-6 col-md-3">
-                                <a class="btn btn-secondary border form-control" asp-controller="Products" asp-action="Index">Go Back</a>
+                                <a class="btn btn-secondary border form-control text-uppercase" asp-controller="Products" asp-action="Index">Go Back</a>
                             </div>
                         </div>
                     </div>

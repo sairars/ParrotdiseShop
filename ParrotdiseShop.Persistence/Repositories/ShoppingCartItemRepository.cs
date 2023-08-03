@@ -1,4 +1,5 @@
-﻿using ParrotdiseShop.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.Repositories;
 using ParrotdiseShop.Persistence.Data;
 
@@ -13,9 +14,11 @@ namespace ParrotdiseShop.Persistence.Repositories
             _context = context;
         }
 
-        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsBy(string userId)
+        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsBy(string userId)
         {
-            return _context.ShoppingCartItems.Where(sc => sc.UserId == userId);
+            return _context.ShoppingCartItems
+                        .Where(sc => sc.UserId == userId)
+                        .Include(sc => sc.Product);
         }
     }
 }

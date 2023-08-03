@@ -71,7 +71,7 @@
     <script>
         $(document).ready(function () {
             $.get("/customer/api/ShoppingCartItems", function (shoppingCartItems) {
-                if (shoppingCartItems.length === 0)
+                if (shoppingCartItems.Length === 0)
                     return;
 
                 let badge = $(".js-cart-count");

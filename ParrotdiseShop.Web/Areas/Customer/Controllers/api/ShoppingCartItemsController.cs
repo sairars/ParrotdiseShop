@@ -12,6 +12,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
     [Route("/customer/api/[controller]")]
     [ApiController]
     [Area("Customer")]
+    [Authorize]
     public class ShoppingCartItemsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -22,16 +23,15 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        [Authorize]
+        
         public IActionResult GetShoppingCartItems()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var shoppingCartItems =  _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsBy(userId);
+            var shoppingCartItems =  _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId);
 
             return Ok(_mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems));
-
         }
     }
 }
