@@ -41,7 +41,7 @@
                         <li class="nav-item cart-counter">
                             <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCartItems" asp-action="Index">
                                 <i class="bi bi-cart"></i>
-                                <span class="invisible badge js-cart-count">0</span>
+                                <span class="invisible badge js-cart-count"></span>
                             </a>
                         </li>
                     </ul>
@@ -71,13 +71,13 @@
     <script>
         $(document).ready(function () {
             $.get("/customer/api/ShoppingCartItems", function (shoppingCartItems) {
-                if (shoppingCartItems.Length === 0)
+                if (shoppingCartItems.length === 0)
                     return;
 
-                let badge = $(".js-cart-count");
+                let badge = $('.js-cart-count');
                 badge
                     .text(shoppingCartItems.length)
-                    .removeClass("invisible")
+                    .removeClass('invisible')
             });
         });
     </script>
