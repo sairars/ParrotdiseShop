@@ -7,7 +7,7 @@
     <div class="col-md-12 text-center">
         <ul class="list-group list-group-horizontal center-pills">
             <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-category-id="0">
-                <a class="fw-semibold text-uppercase" asp-action="Index" asp-route-categoryId="0">
+                <a class="fw-semibold text-uppercase" asp-controller="Home" asp-action="Index" asp-route-categoryId="0">
                     All
                 </a>
             </li>
@@ -15,7 +15,7 @@
             @foreach (var category in Model.CategoryDtos)
             {
                 <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-category-id="@category.Id">
-                    <a class="fw-semibold text-uppercase" asp-action="Index" asp-route-categoryId="@category.Id">
+                    <a class="fw-semibold text-uppercase"  asp-controller="Home"  asp-action="Index" asp-route-categoryId="@category.Id">
                         @category.Name
                     </a>
                 </li>
@@ -62,19 +62,19 @@
 
         $(document).ready(function () {
 
-            let href = $(location).attr("href");
-
+            let href = $(location).attr('href');
             let url = new URL(href);
 
-            let selectedCategoryId = url.pathname.slice(-1);
+            let selectedCategoryId = url.pathname.split('/').slice(-1);
 
             $('.list-group-item').each(function () {
-                $(this).removeClass("active");
+                $(this).removeClass('active');
 
                 let thisCategoryId = $(this).attr('data-category-id');
+                console.log(thisCategoryId);
 
-                if ((thisCategoryId == "0" && selectedCategoryId == "/") || thisCategoryId == selectedCategoryId) {
-                    $(this).addClass("active");
+                if ((thisCategoryId === '0' && selectedCategoryId == '') || thisCategoryId == selectedCategoryId) {
+                    $(this).addClass('active');
                 }
             });
         });

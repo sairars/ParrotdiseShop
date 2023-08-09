@@ -54,6 +54,10 @@ namespace ParrotdiseShop.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapControllerRoute(name: "home",
+                pattern: "Customer/Home/Index/{categoryId?}",
+                defaults: new { area="Customer", controller = "Home", action = "Index" });
+             
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
