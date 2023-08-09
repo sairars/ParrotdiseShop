@@ -39,5 +39,22 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             return View(viewModel);
         }
+
+        public IActionResult UpdateOrRemoveShoppingCartItem(int id, int change)
+        {
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.Id == id);
+
+            if (shoppingCartItemFromDb == null)
+                return NotFound();
+
+            // Remove shopping Cart Item from Shopping Cart
+            if (shoppingCartItemFromDb.Quantity + change == 0 || change == 0)
+                _unitOfWork.ShoppingCartItems.Remove(shoppingCartItemFromDb);
+            else
+                shoppingCartItemFromDb.Update(change);
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
