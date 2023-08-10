@@ -20,5 +20,12 @@ namespace ParrotdiseShop.Persistence.Repositories
                         .Where(sc => sc.UserId == userId)
                         .Include(sc => sc.Product);
         }
+
+        public ShoppingCartItem? GetShoppingCartItemWithProduct(int id)
+        {
+            return _context.ShoppingCartItems
+                        .Include(sc => sc.Product)
+                        .SingleOrDefault(sc => sc.Id == id);
+        }
     }
 }

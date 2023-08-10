@@ -6,10 +6,10 @@ namespace ParrotdiseShop.Core.ViewModels
 {
     public class ProductFormViewModel
     {
-        public ProductDto ProductDto { get; set; }
+        public ProductDto Product { get; set; }
 
         [ValidateNever]
-        public IEnumerable<CategoryDto> CategoryDtos { get; set; }
+        public IEnumerable<CategoryDto> Categories { get; set; }
 
         [ValidateNever]
         public string Heading { get; set; }

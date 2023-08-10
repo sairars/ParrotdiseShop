@@ -12,7 +12,7 @@
                 </a>
             </li>
             
-            @foreach (var category in Model.CategoryDtos)
+            @foreach (var category in Model.Categories)
             {
                 <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-category-id="@category.Id">
                     <a class="fw-semibold text-uppercase"  asp-controller="Home"  asp-action="Index" asp-route-categoryId="@category.Id">
@@ -25,9 +25,10 @@
 </div>
 
 <div class="row">
-    @foreach (var product in Model.ProductDtos)
+    @foreach (var product in Model.Products)
     {
-        var inStock = (product.UnitsInStock >= 1);
+        // If Product is out of stock, display Out Of Stock
+        var inStock = (product.UnitsInStock > 0);
 
         <div class="col-lg-3 col-sm-6">
             <div class="row">
@@ -40,14 +41,7 @@
                             <p class="card-title my-3">@product.Name</p>
                             <p class="card-title">@(inStock? "In Stock" : "Out Of Stock")</p>
 
-                            @if (inStock)
-                            {
-                                <a asp-action="Details" asp-route-id="@product.Id" class="stretched-link btn bg-primary-subtle rounded-pill text-center text-black fw-semibold">@product.UnitPrice.ToString("c")</a>
-                            }
-                            else
-                            {
-                                <a class="disabled stretched-link btn bg-primary-subtle rounded-pill text-center text-black fw-semibold border-0">@product.UnitPrice.ToString("c")</a>
-                            }
+                            <a asp-action="Details" asp-route-id="@product.Id" class="stretched-link btn bg-primary-subtle rounded-pill text-center text-black fw-semibold">@product.UnitPrice.ToString("c")</a>
                         </div>
                     </div>
                 </div>

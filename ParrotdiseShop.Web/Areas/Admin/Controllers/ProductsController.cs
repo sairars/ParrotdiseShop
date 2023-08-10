@@ -36,7 +36,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
             var viewModel = new ProductFormViewModel
             {
-                CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+                Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = false
             };
@@ -54,8 +54,8 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
             var categories = _unitOfWork.Categories.GetAll();
             var viewModel = new ProductFormViewModel
             {
-                ProductDto = _mapper.Map<ProductDto>(productFromDb),
-                CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+                Product = _mapper.Map<ProductDto>(productFromDb),
+                Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = true
             };
@@ -70,11 +70,11 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var categories = _unitOfWork.Categories.GetAll();
-                viewModel.CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+                viewModel.Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories);
                 return View("ProductForm", viewModel);
             }
 
-            var productDto = viewModel.ProductDto;
+            var productDto = viewModel.Product;
 
             if (file != null)
             {

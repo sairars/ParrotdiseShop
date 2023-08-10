@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Details";
 
-    var max = (Model.Product.UnitsInStock < 1000)
-                ? Model.Product.UnitsInStock
-                : 1000;
+    // Maximun quantity of items to be added to cart is dependent 
+    // upon the number of units in stock per item
+    var max = Model.Product.UnitsInStock;
 }
 
 <form method="post" asp-action="AddToCart">
@@ -42,24 +42,33 @@
                             <p class="text-dark text-opacity-50">Price: @Model.Product.UnitPrice</p>
                             @Html.Raw(Model.Product.Description)
                         </div>
-                        <div class="row pl-2 mb-3">
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text bg-primary-subtle border-0 fw-semibold"
-                                          id="inputGroup-sizing-default">
-                                        Quantity
-                                    </span>
-                                    <input type="number" asp-for="Quantity" class="form-control text-end border-1 text-center" min="1" max="@max" />
+                        @if (Model.Product.UnitsInStock > 0)
+                        {
+                            <div class="row pl-2 mb-3">
+                                <div class="col-md-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-primary-subtle border-0 fw-semibold"
+                                              id="inputGroup-sizing-default">
+                                            Quantity
+                                        </span>
+                                        <input type="number" asp-for="Quantity" class="form-control text-end border-1 text-center" min="1" max="@max" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" class="btn btn-primary w-100 py-2 text-uppercase fw-semibold">
-                                    Add to Cart
-                                </button>
+                            <div class="row">
+                                <div class="col-12 col-md-6 pb-1">
+                                    <button type="submit" class="btn btn-primary w-100 py-2 text-uppercase fw-semibold">
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="row ps-2">
+                                <p class="text-danger">This item is currently out of stock</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

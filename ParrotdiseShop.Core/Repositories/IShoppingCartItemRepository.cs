@@ -5,6 +5,6 @@ namespace ParrotdiseShop.Core.Repositories
     public interface IShoppingCartItemRepository : IRepository<ShoppingCartItem>
     {
         IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsBy(string userId);
-
+        ShoppingCartItem? GetShoppingCartItemWithProduct(int id);
     }
 }

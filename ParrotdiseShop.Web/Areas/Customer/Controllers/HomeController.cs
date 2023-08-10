@@ -30,8 +30,8 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             var viewModel = new ProductsViewModel
             {
-                ProductDtos = _mapper.Map<IEnumerable<ProductDto>>(products),
-                CategoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+                Products = _mapper.Map<IEnumerable<ProductDto>>(products),
+                Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
             };
 
             return View(viewModel);
@@ -42,7 +42,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
         {
             var productFromDb = _unitOfWork.Products.GetProductWithCategory(id);
 
-            if (productFromDb == null || productFromDb.UnitsInStock < 1)
+            if (productFromDb == null)
                 return NotFound();
 
             var shoppingCartItem = new ShoppingCartItem
@@ -67,7 +67,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                                                                             && sc.ProductId == shoppingCartItem.ProductId);
 
             if (shoppingCartItemFromDb != null)
-                shoppingCartItemFromDb.Update(shoppingCartItem.Quantity);
+                shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
             else
             {
                 shoppingCartItem.UserId = userId;
@@ -79,7 +79,9 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (product == null)
                 return NotFound();
 
-            product.UpdateUnitsInStock(shoppingCartItem.Quantity);
+            // When adding to shopping cart, reduce product inventory
+            // (units in stock) by the no of items added to cart
+            product.Decrement(shoppingCartItem.Quantity);
 
             _unitOfWork.Complete();
 

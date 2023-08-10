@@ -18,13 +18,21 @@ namespace ParrotdiseShop.Core.Models
         public decimal UnitPrice { get; set; }
 
         public int UnitsInStock { get; set; }
+
         public string ImagePath { get; set; }
+
         public int CategoryId { get; set; }
+
         public Category Category { get; set; }
 
-        public void UpdateUnitsInStock(int quantity)
+        public void Increment(int unitsInStock)
         {
-            UnitsInStock -= quantity;
+            UnitsInStock += unitsInStock;
+        }
+
+        public void Decrement(int unitsInStock)
+        {
+            UnitsInStock -= unitsInStock;
         }
     }
 }

@@ -40,21 +40,66 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
-        public IActionResult UpdateOrRemoveShoppingCartItem(int id, int change)
+        public IActionResult IncrementQuantity(int id)
         {
-            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.Id == id);
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
 
             if (shoppingCartItemFromDb == null)
                 return NotFound();
 
-            // Remove shopping Cart Item from Shopping Cart
-            if (shoppingCartItemFromDb.Quantity + change == 0 || change == 0)
-                _unitOfWork.ShoppingCartItems.Remove(shoppingCartItemFromDb);
-            else
-                shoppingCartItemFromDb.Update(change);
+            var product = shoppingCartItemFromDb.Product;
+
+            // Reduce units in stock and increase item quantity in shopping cart
+            product.Decrement(1);
+            shoppingCartItemFromDb.Increment(1);
+
             _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DecrementQuantityOrRemove(int id)
+        {
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
+
+            if (shoppingCartItemFromDb == null)
+                return NotFound();
+
+            // Return item to product inventory - increment by 1
+            var product = shoppingCartItemFromDb.Product;
+            product.Increment(1);
+
+            // Remove shopping Cart Item from Shopping Cart
+            if (shoppingCartItemFromDb.Quantity == 1)
+                _unitOfWork.ShoppingCartItems.Remove(shoppingCartItemFromDb);
+            else
+                shoppingCartItemFromDb.Decrement();
+
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int id)
+        {
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
+
+            if (shoppingCartItemFromDb == null)
+                return NotFound();
+
+            // Return item(s) to product inventory - increment by the quantity removed from shopping cart
+            var product = shoppingCartItemFromDb.Product;
+            product.Increment(shoppingCartItemFromDb.Quantity);
+
+            _unitOfWork.ShoppingCartItems.Remove(shoppingCartItemFromDb);
+
+            _unitOfWork.Complete();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Summary()
+        {
+            return View();
         }
     }
 }

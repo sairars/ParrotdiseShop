@@ -40,16 +40,27 @@
                                 </div>
                                 <div class="col-6 col-sm-4 col-lg-6 pt-2">
                                     <div class="w-75 btn-group" role="group">
-                                        <a asp-action="UpdateOrRemoveShoppingCartItem" asp-route-id="@item.Id" asp-route-change="1" class="btn btn-outline-primary bg-gradient py-2">
-                                            <i class="bi bi-plus-square"></i>
-                                        </a> &nbsp;
-                                        <a asp-action="UpdateOrRemoveShoppingCartItem" asp-route-id="@item.Id" asp-route-change="-1" class="btn btn-outline-primary bg-gradient py-2">
+                                        @if (item.Product.UnitsInStock > 0)
+                                        {
+                                            <a asp-action="IncrementQuantity" asp-route-id="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
+                                                <i class="bi bi-plus-square"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            // Disable the option to increment quantity if no more items in stock
+                                            <a class=" disabled btn btn-outline-primary bg-gradient py-2">
+                                                <i class="bi bi-plus-square"></i>
+                                            </a>
+                                        }
+                                        &nbsp;
+                                        <a asp-action="DecrementQuantityOrRemove" asp-route-id="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
                                             <i class="bi bi-dash-square"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                    <a asp-action="UpdateOrRemoveShoppingCartItem" asp-route-id="@item.Id" asp-route-change="0" class="btn btn-danger bg-gradient py-2 ">
+                                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger bg-gradient py-2 ">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </div>
@@ -59,8 +70,10 @@
                 }
             </div>
         </div>
+
         @if (Model.ShoppingCartItems.Count() > 0)
         {
+            //  Display shopping cart details only if 1 or more items in shopping cart
             <div class="card-footer bg-white border-0">
                 <div class="row">
                     <div class="col-md-3 offset-md-7">

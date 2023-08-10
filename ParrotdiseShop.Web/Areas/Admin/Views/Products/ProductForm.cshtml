@@ -17,49 +17,49 @@
         <form method="post" asp-action="Save" class="row" enctype="multipart/form-data" id="productForm">
             @if (Model.IsEdit)
             {
-                <input hidden asp-for="ProductDto.Id" />
+                <input hidden asp-for="Product.Id" />
             }
             else
             {
-                <input hidden asp-for="ProductDto.Id" value="0" />
+                <input hidden asp-for="Product.Id" value="0" />
             }
             <div class="row">
                 <div class="col-10">
                     <div class="border p-3">
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.Name" class="my-1 text-muted"></label>
-                            <input asp-for="ProductDto.Name" class="form-control" />
-                            <span asp-validation-for="ProductDto.Name" class="text-danger"></span>
+                            <label asp-for="Product.Name" class="my-1 text-muted"></label>
+                            <input asp-for="Product.Name" class="form-control" />
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.Description" class="my-1 text-muted"></label>
-                            <textarea asp-for="ProductDto.Description" rows="2" class="form-control"></textarea>
-                            <span asp-validation-for="ProductDto.Description" class="text-danger"></span>
+                            <label asp-for="Product.Description" class="my-1 text-muted"></label>
+                            <textarea asp-for="Product.Description" rows="2" class="form-control"></textarea>
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.SKU" class="my-1 text-muted"></label>
-                            <input asp-for="ProductDto.SKU" class="form-control" />
+                            <label asp-for="Product.SKU" class="my-1 text-muted"></label>
+                            <input asp-for="Product.SKU" class="form-control" />
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.UnitPrice" class="my-1 text-muted"></label>
-                            <input asp-for="ProductDto.UnitPrice" class="form-control" />
-                            <span asp-validation-for="ProductDto.UnitPrice" class="text-danger"></span>
+                            <label asp-for="Product.UnitPrice" class="my-1 text-muted"></label>
+                            <input asp-for="Product.UnitPrice" class="form-control" />
+                            <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.UnitsInStock" class="my-1 text-muted"></label>
-                            <input asp-for="ProductDto.UnitsInStock" class="form-control" />
-                            <span asp-validation-for="ProductDto.UnitsInStock" class="text-danger"></span>
+                            <label asp-for="Product.UnitsInStock" class="my-1 text-muted"></label>
+                            <input asp-for="Product.UnitsInStock" class="form-control" />
+                            <span asp-validation-for="Product.UnitsInStock" class="text-danger"></span>
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.ImagePath" class="my-1 text-muted"></label>
+                            <label asp-for="Product.ImagePath" class="my-1 text-muted"></label>
                             <input type="file" id="uploadBox" name="file" class="form-control" />
                         </div>
                         <div class="py-2 col-12">
-                            <label asp-for="ProductDto.CategoryId" class="form-label"></label>
-                            <select asp-for="ProductDto.CategoryId" asp-items="new SelectList(Model.CategoryDtos, nameof(Category.Id), nameof(Category.Name))" class="form-select">
+                            <label asp-for="Product.CategoryId" class="form-label"></label>
+                            <select asp-for="Product.CategoryId" asp-items="new SelectList(Model.Categories, nameof(Category.Id), nameof(Category.Name))" class="form-select">
                                 <option disabled selected>Please select one</option>
                             </select>
-                            <span asp-validation-for="ProductDto.CategoryId" class="text-danger"></span>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
                         <div class="row pt-2">
                             <div class="col-6 col-md-3">
@@ -82,7 +82,7 @@
                 <div class="col-2">
                     @if (Model.IsEdit)
                     {
-                        <img src="@Model.ProductDto.ImagePath" class="img-fluid img-product" />
+                        <img src="@Model.Product.ImagePath" class="img-fluid img-product" />
                     }
                 </div>
             </div>
