@@ -97,7 +97,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Summary()
+        public IActionResult Checkout()
         {
             return View();
         }
