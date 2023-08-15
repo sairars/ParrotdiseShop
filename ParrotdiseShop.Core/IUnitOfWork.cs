@@ -7,6 +7,8 @@ namespace ParrotdiseShop.Core
         ICategoryRepository Categories { get; }
         IProductRepository Products { get; }
         IShoppingCartItemRepository ShoppingCartItems { get; }
+        IOrderRepository Orders { get; }
+        IOrderDetailRepository OrderDetails { get; }
         void Complete();
     }
 }
