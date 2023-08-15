@@ -24,15 +24,5 @@ namespace ParrotdiseShop.Core.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
-
-        public void Increment(int unitsInStock)
-        {
-            UnitsInStock += unitsInStock;
-        }
-
-        public void Decrement(int unitsInStock)
-        {
-            UnitsInStock -= unitsInStock;
-        }
     }
 }

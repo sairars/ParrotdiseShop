@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using System.Security.Claims;
 
@@ -24,13 +23,10 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = GetUserId();
 
-            var shoppingCartItems = _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId).ToList();
-            var total = shoppingCartItems
-                            .Select(sc => new { TotalPerItem = sc.Quantity * sc.Product.UnitPrice })
-                            .Sum(t => t.TotalPerItem);
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsBy(userId);
 
             var viewModel = new ShoppingCartViewModel
             {
@@ -40,6 +36,8 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult IncrementQuantity(int id)
         {
             var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
@@ -47,27 +45,33 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (shoppingCartItemFromDb == null)
                 return NotFound();
 
-            var product = shoppingCartItemFromDb.Product;
+            if (shoppingCartItemFromDb.Product.UnitsInStock == 0)
+                ModelState.AddModelError("", 
+                    $"{shoppingCartItemFromDb.Product.Name} is now out of stock. Please remove from cart to proceed to checkout");
+            else if (shoppingCartItemFromDb.Quantity > shoppingCartItemFromDb.Product.UnitsInStock)
+                ModelState.AddModelError("", 
+                    $"{shoppingCartItemFromDb.Product.Name} is running low on stock. Please reduce quantity.");
+            else if (shoppingCartItemFromDb.Quantity == shoppingCartItemFromDb.Product.UnitsInStock)
+                ModelState.AddModelError("",
+                    $"You have reached max. limit. Cannot add more quantity of {shoppingCartItemFromDb.Product.Name}");
 
-            // Reduce units in stock and increase item quantity in shopping cart
-            product.Decrement(1);
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(Index));
+
             shoppingCartItemFromDb.Increment(1);
-
             _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DecrementQuantityOrRemove(int id)
         {
-            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.Id == id);
 
             if (shoppingCartItemFromDb == null)
                 return NotFound();
-
-            // Return item to product inventory - increment by 1
-            var product = shoppingCartItemFromDb.Product;
-            product.Increment(1);
 
             // Remove shopping Cart Item from Shopping Cart
             if (shoppingCartItemFromDb.Quantity == 1)
@@ -80,26 +84,48 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Remove(int id)
         {
-            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.GetShoppingCartItemWithProduct(id);
+            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.Id == id);
 
             if (shoppingCartItemFromDb == null)
                 return NotFound();
 
-            // Return item(s) to product inventory - increment by the quantity removed from shopping cart
-            var product = shoppingCartItemFromDb.Product;
-            product.Increment(shoppingCartItemFromDb.Quantity);
-
             _unitOfWork.ShoppingCartItems.Remove(shoppingCartItemFromDb);
-
             _unitOfWork.Complete();
+
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Checkout()
         {
-            return View();
+            var userId = GetUserId();
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId);
+
+            if (!shoppingCartItems.Any())
+                return NotFound();
+
+            var viewModel = new ShoppingCartViewModel
+            {
+                ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems)
+            };
+
+            if (!viewModel.IsValid)
+                return RedirectToAction(nameof(Index));
+
+            return View(viewModel);
+        }
+
+        private string GetUserId()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return userId;
         }
     }
 }

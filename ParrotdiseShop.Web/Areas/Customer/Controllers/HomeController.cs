@@ -60,6 +60,21 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
         [Authorize]
         public IActionResult AddToCart(ShoppingCartItem shoppingCartItem)
         {
+            var productFromDb = _unitOfWork.Products.GetProductWithCategory(shoppingCartItem.ProductId);
+
+            if (productFromDb == null)
+                return NotFound();
+
+            shoppingCartItem.Product = productFromDb;
+
+            if (shoppingCartItem.Product.UnitsInStock == 0)
+                ModelState.AddModelError("", "Item is out of stock");
+            else if (shoppingCartItem.Quantity > shoppingCartItem.Product.UnitsInStock)
+                ModelState.AddModelError("Quantity", "This item is running low on stock. Please reduce quantity.");
+
+            if(!ModelState.IsValid)
+                return View(nameof(Details), shoppingCartItem);
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -71,17 +86,8 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             else
             {
                 shoppingCartItem.UserId = userId;
-                _unitOfWork.ShoppingCartItems.Add(_mapper.Map<ShoppingCartItem>(shoppingCartItem));
+                _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
             }
-
-            var product = _unitOfWork.Products.Get(p => p.Id == shoppingCartItem.ProductId);
-
-            if (product == null)
-                return NotFound();
-
-            // When adding to shopping cart, reduce product inventory
-            // (units in stock) by the no of items added to cart
-            product.Decrement(shoppingCartItem.Quantity);
 
             _unitOfWork.Complete();
 

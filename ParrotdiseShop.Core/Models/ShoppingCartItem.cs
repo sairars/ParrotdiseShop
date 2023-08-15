@@ -1,17 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace ParrotdiseShop.Core.Models
 {
     public class ShoppingCartItem
     {
         public int Id { get; set; }
-        
+
+        [ValidateNever]
         public string UserId  { get; set; }
-        
+
+        [ValidateNever]
         public ApplicationUser User { get; set; }
-        
+
         public int ProductId { get; set; }
-        
+
+        [ValidateNever]
         public Product Product { get; set; }
 
         [Range(1,1000, ErrorMessage = "Must be between 1 and 1000")]
