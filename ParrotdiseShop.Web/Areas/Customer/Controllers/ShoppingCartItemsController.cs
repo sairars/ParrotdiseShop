@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
+using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using System.Security.Claims;
 
@@ -23,9 +24,10 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var userId = GetUserId();
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+			var shoppingCartItems = _unitOfWork.ShoppingCartItems
                                         .GetAllShoppingCartItemsWithProductsBy(userId);
 
             var viewModel = new ShoppingCartViewModel
@@ -103,7 +105,8 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Checkout()
         {
-            var userId = GetUserId();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var shoppingCartItems = _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId);
 
@@ -118,14 +121,14 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (!viewModel.IsValid)
                 return RedirectToAction(nameof(Index));
 
-            return View(viewModel);
-        }
+            var customer = _unitOfWork.ApplicationUsers.Get(u => u.Id == userId);
 
-        private string GetUserId()
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return userId;
+            if (customer == null)
+                return NotFound();
+
+            viewModel.Order = new Order(customer);
+            
+            return View(viewModel);
         }
     }
 }

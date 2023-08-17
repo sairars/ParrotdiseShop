@@ -20,5 +20,20 @@
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Name { get; set; }
+
+        public Order()
+        {     
+        }
+
+        public Order(ApplicationUser customer)
+        {
+            Name = customer.Name;
+            PhoneNumber = customer.PhoneNumber;
+            City = customer.City;
+            State = customer.State;
+            PostalCode = customer.PostalCode;
+            StreetAddress = customer.StreetAddress;
+        }
+
     }
 }

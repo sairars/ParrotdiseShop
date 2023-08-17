@@ -9,6 +9,7 @@ namespace ParrotdiseShop.Core
         IShoppingCartItemRepository ShoppingCartItems { get; }
         IOrderRepository Orders { get; }
         IOrderDetailRepository OrderDetails { get; }
+        IApplicationUserRepository ApplicationUsers { get; }
         void Complete();
     }
 }

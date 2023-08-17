@@ -14,6 +14,7 @@ namespace ParrotdiseShop.Persistence
         public IShoppingCartItemRepository ShoppingCartItems { get; set; }
         public IOrderRepository Orders { get; set; }
         public IOrderDetailRepository OrderDetails { get; set; }
+        public IApplicationUserRepository ApplicationUsers { get; set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -23,6 +24,7 @@ namespace ParrotdiseShop.Persistence
             ShoppingCartItems = new ShoppingCartItemRepository(_context);
             Orders = new OrderRepository(_context);
             OrderDetails = new OrderDetailRepository(_context);
+            ApplicationUsers = new ApplicationUserRepository(_context);
         }
 
         public void Complete()
