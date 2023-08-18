@@ -61,10 +61,13 @@
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label asp-for="Order.State">State</label>
+									<label asp-for="Order.State">Province</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="Order.State" class="form-control" />
+									<select asp-for="Order.State" asp-items="@Model.Provinces" class="form-select">
+										<option disabled selected>Please select one</option>
+									</select>
+									@*<input asp-for="Order.State" class="form-control" />*@
 								</div>
 							</div>
 							<div class="row my-1">

@@ -1,4 +1,5 @@
-﻿using ParrotdiseShop.Core.Dtos;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace ParrotdiseShop.Core.ViewModels
     {
         public IEnumerable<ShoppingCartItemDto> ShoppingCartItems { get; set; }
         public Order Order { get; set; }
+        public IEnumerable<SelectListItem> Provinces { get; set; }
         public decimal Total
         {
             get

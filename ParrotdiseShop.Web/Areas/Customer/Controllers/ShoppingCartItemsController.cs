@@ -127,6 +127,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 return NotFound();
 
             viewModel.Order = new Order(customer);
+            viewModel.Provinces = CanadianProvinces.Provinces;
             
             return View(viewModel);
         }
