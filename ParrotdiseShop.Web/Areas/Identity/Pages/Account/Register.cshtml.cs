@@ -104,7 +104,7 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             [Display(Name = "Street")]
             public string? StreetAddress { get; set; }
             public string? City { get; set; }
-            public string? State { get; set; }
+            public string? Province { get; set; }
 
             [Display(Name = "Postal Code")]
             public string? PostalCode { get; set; }
@@ -140,7 +140,7 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.PhoneNumber;
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
-                user.State = Input.State;
+                user.Province = Input.Province;
                 user.PostalCode = Input.PostalCode;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
