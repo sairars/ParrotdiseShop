@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
@@ -14,12 +15,14 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
     public class ProductsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -36,7 +39,15 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
             var productFromDb = _unitOfWork.Products.Get(p => p.Id == id);
 
             if (productFromDb == null)
-                return NotFound();
+                return NotFound("Item could not be deleted.");
+
+            var fileDirectory = Path.Combine(_webHostEnvironment.WebRootPath, @"images\products");
+
+            string fileName = Path.GetFileName(productFromDb.ImagePath);
+            string filePath = Path.Combine(fileDirectory, fileName);
+
+            if (System.IO.File.Exists(filePath))
+                System.IO.File.Delete(filePath);
 
             _unitOfWork.Products.Remove(productFromDb);
             _unitOfWork.Complete();
