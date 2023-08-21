@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using ParrotdiseShop.Core.Models;
 
@@ -70,19 +71,15 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
             public string Password { get; set; }
 
             /// <summary>
@@ -102,16 +99,18 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Display(Name = "Street")]
-            public string? StreetAddress { get; set; }
-            public string? City { get; set; }
-            public string? Province { get; set; }
+            public string StreetAddress { get; set; }
+            public string City { get; set; }
+            public string Province { get; set; }
 
             [Display(Name = "Postal Code")]
-            public string? PostalCode { get; set; }
+            public string PostalCode { get; set; }
 
             [Display(Name = "Phone Number")]
-            public string?  PhoneNumber { get; set; }
-        }
+            public string  PhoneNumber { get; set; }
+
+			public IEnumerable<SelectListItem>? Provinces { get; set; }
+		}
 
         public async Task OnGetAsync(string? returnUrl = null)
         {
@@ -120,8 +119,9 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 
             Input = new InputModel
             {
-                Roles = _roleManager.Roles
-            };
+                Roles = _roleManager.Roles,
+				Provinces = CanadianProvinces.Provinces
+		    };
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
@@ -184,6 +184,9 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            Input.Roles = _roleManager.Roles;
+            Input.Provinces = CanadianProvinces.Provinces;
+
             return Page();
         }
 
