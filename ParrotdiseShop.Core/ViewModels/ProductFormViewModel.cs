@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
 
 namespace ParrotdiseShop.Core.ViewModels
 {
@@ -9,7 +9,7 @@ namespace ParrotdiseShop.Core.ViewModels
         public ProductDto Product { get; set; }
 
         [ValidateNever]
-        public IEnumerable<CategoryDto> Categories { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
 
         [ValidateNever]
         public string Heading { get; set; }

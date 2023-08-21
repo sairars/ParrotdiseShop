@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
+﻿using ParrotdiseShop.Core.Dtos;
 
 namespace ParrotdiseShop.Core.ViewModels
 {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
@@ -32,11 +33,17 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
         public IActionResult New()
         {
-            var categories = _unitOfWork.Categories.GetAll();
+            var categories = _unitOfWork.Categories
+                                    .GetAll()
+                                    .Select(c => new SelectListItem 
+                                    { 
+                                        Text = c.Name, 
+                                        Value = c.Id.ToString() }
+                                    );
 
             var viewModel = new ProductFormViewModel
             {
-                Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+                Categories = categories,
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = false
             };
@@ -51,11 +58,18 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
             if (productFromDb == null)
                 return NotFound();
 
-            var categories = _unitOfWork.Categories.GetAll();
+            var categories = _unitOfWork.Categories
+                                    .GetAll()
+                                    .Select(c => new SelectListItem
+                                    {
+                                        Text = c.Name,
+                                        Value = c.Id.ToString()
+                                    });
+
             var viewModel = new ProductFormViewModel
             {
                 Product = _mapper.Map<ProductDto>(productFromDb),
-                Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
+                Categories = categories,
                 Heading = MethodBase.GetCurrentMethod().Name,
                 IsEdit = true
             };
@@ -69,8 +83,15 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var categories = _unitOfWork.Categories.GetAll();
-                viewModel.Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+                var categories = _unitOfWork.Categories
+                                        .GetAll()
+                                        .Select(c => new SelectListItem
+                                        {
+                                            Text = c.Name,
+                                            Value = c.Id.ToString()
+                                        });
+
+                viewModel.Categories = categories;
                 return View("ProductForm", viewModel);
             }
 

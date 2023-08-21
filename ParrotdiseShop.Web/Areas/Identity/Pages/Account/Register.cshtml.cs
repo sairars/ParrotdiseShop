@@ -93,23 +93,26 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 
             [Display(Name = "Role")]
             public string RoleName { get; set; }
-            public IEnumerable<IdentityRole>? Roles { get; set; }
+
+            public IEnumerable<SelectListItem>? Roles { get; set; }
 
             [Display(Name = "Full Name")]
             public string Name { get; set; }
 
             [Display(Name = "Street")]
             public string StreetAddress { get; set; }
+
             public string City { get; set; }
+
             public string Province { get; set; }
+
+            public IEnumerable<SelectListItem>? Provinces { get; set; }
 
             [Display(Name = "Postal Code")]
             public string PostalCode { get; set; }
 
             [Display(Name = "Phone Number")]
             public string  PhoneNumber { get; set; }
-
-			public IEnumerable<SelectListItem>? Provinces { get; set; }
 		}
 
         public async Task OnGetAsync(string? returnUrl = null)
@@ -119,8 +122,13 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 
             Input = new InputModel
             {
-                Roles = _roleManager.Roles,
-				Provinces = CanadianProvinces.Provinces
+                Roles = _roleManager.Roles
+                            .Select(r => new SelectListItem 
+                            {
+                                Text = r.Name, 
+                                Value = r.Name 
+                            }),
+                Provinces = CanadianProvinces.Provinces
 		    };
         }
 
@@ -184,7 +192,12 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
-            Input.Roles = _roleManager.Roles;
+            Input.Roles = _roleManager.Roles
+                            .Select(r => new SelectListItem
+                            {
+                                Text = r.Name,
+                                Value = r.Name
+                            });
             Input.Provinces = CanadianProvinces.Provinces;
 
             return Page();
