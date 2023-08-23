@@ -178,7 +178,57 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             _unitOfWork.Complete();
 
-            return View("OrderConfirmation");
+			#region Stripe Settings
+
+			var domain = (_webHostEnvironment.IsDevelopment())
+									? "https://localhost:44372/"
+									: "";
+
+			var options = new SessionCreateOptions
+			{
+				LineItems = new List<SessionLineItemOptions>(),
+				Mode = "payment",
+				SuccessUrl = $"{domain}customer/ShoppingCartItems/OrderConfirmation?id={order.Id}",
+				CancelUrl = $"{domain}customer/ShoppingCartItems/Index"
+			};
+
+			foreach (var item in viewModel.ShoppingCartItems)
+			{
+				var sessionLineItem = new SessionLineItemOptions
+				{
+					PriceData = new SessionLineItemPriceDataOptions
+					{
+						UnitAmount = (long)(item.Product.UnitPrice * 100),
+						Currency = "usd",
+						ProductData = new SessionLineItemPriceDataProductDataOptions
+						{
+							Name = item.Product.Name
+						}
+					},
+					Quantity = item.Quantity
+				};
+
+				options.LineItems.Add(sessionLineItem);
+			}
+
+			var service = new SessionService();
+			Session session = service.Create(options);
+
+            order.UpdateStripeSessionId(session.Id);
+
+			_unitOfWork.Complete();
+
+			Response.Headers.Add("Location", session.Url);
+
+			return new StatusCodeResult(303);
+
+			#endregion
+        }
+
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(nameof(OrderConfirmation));
         }
     }
 }

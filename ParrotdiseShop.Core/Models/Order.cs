@@ -39,5 +39,9 @@ namespace ParrotdiseShop.Core.Models
             StreetAddress = customer.StreetAddress;
         }
 
-    }
+		public void UpdateStripeSessionId(string sessionId)
+		{
+			PaymentSessionId = sessionId;
+		}
+	}
 }

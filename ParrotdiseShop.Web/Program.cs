@@ -5,6 +5,7 @@ using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Persistence;
 using ParrotdiseShop.Persistence.Data;
+using Stripe;
 
 namespace ParrotdiseShop.Web
 {
@@ -30,7 +31,9 @@ namespace ParrotdiseShop.Web
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            builder.Services.ConfigureApplicationCookie(options =>
+			builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+			builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -51,7 +54,10 @@ namespace ParrotdiseShop.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
+
+			StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:StripeSecretKey").Get<String>();
+
+			app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(name: "home",
