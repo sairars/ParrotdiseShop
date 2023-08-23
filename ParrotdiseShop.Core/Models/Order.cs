@@ -11,6 +11,7 @@ namespace ParrotdiseShop.Core.Models
         public DateTime ShippingDate { get; set; }
         public decimal Total { get; set; }
         public string Status { get; set; }
+        public string PaymentStatus { get; set; }
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
         public DateTime PaymentDate { get; set; }

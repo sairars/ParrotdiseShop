@@ -155,11 +155,12 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             viewModel.Order.UserId = userId;
             viewModel.Order.Total = viewModel.Total;
             viewModel.Order.Status = OrderStatus.StatusPending;
+            viewModel.Order.PaymentStatus = OrderStatus.PaymentStatusPending;
             viewModel.Order.CreationDate = DateTime.Now;
 
             var order = _mapper.Map<Order>(viewModel.Order);
-            _unitOfWork.Orders.Add(order);
 
+            _unitOfWork.Orders.Add(order);
             _unitOfWork.Complete();
 
             foreach (var item in viewModel.ShoppingCartItems)
