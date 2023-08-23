@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
+using Stripe.Checkout;
 using System.Security.Claims;
+using static System.Net.WebRequestMethods;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
@@ -15,11 +18,13 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ShoppingCartItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ShoppingCartItemsController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -103,7 +108,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Checkout()
+        public IActionResult Checkout(ShoppingCartViewModel viewModel)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -113,10 +118,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (!shoppingCartItems.Any())
                 return NotFound();
 
-            var viewModel = new ShoppingCartViewModel
-            {
-                ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems)
-            };
+            viewModel.ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems);
 
             if (!viewModel.IsValid)
                 return RedirectToAction(nameof(Index));
@@ -126,10 +128,56 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (customer == null)
                 return NotFound();
 
-            viewModel.Order = new Order(customer);
+            viewModel.Order = _mapper.Map<OrderDto>(new Order(customer));
             viewModel.Provinces = CanadianProvinces.Provinces;
             
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PlaceOrder(ShoppingCartViewModel viewModel)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsBy(userId);
+
+            if (!shoppingCartItems.Any())
+                return NotFound();
+
+            viewModel.ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems);
+
+            if (!viewModel.IsValid)
+                return RedirectToAction(nameof(Index));
+
+            viewModel.Order.UserId = userId;
+            viewModel.Order.Total = viewModel.Total;
+            viewModel.Order.Status = OrderStatus.StatusPending;
+            viewModel.Order.CreationDate = DateTime.Now;
+
+            var order = _mapper.Map<Order>(viewModel.Order);
+            _unitOfWork.Orders.Add(order);
+
+            _unitOfWork.Complete();
+
+            foreach (var item in viewModel.ShoppingCartItems)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    OrderId = order.Id,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = item.Product.UnitPrice
+                };
+
+                _unitOfWork.OrderDetails.Add(orderDetail);
+            }
+
+            _unitOfWork.Complete();
+
+            return View("OrderConfirmation");
         }
     }
 }

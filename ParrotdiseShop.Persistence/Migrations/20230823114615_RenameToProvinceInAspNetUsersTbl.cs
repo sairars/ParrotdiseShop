@@ -5,7 +5,7 @@
 namespace ParrotdiseShop.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class foo : Migration
+    public partial class RenameToProvinceInAspNetUsersTbl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

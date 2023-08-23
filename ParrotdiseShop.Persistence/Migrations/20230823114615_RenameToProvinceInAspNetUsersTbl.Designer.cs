@@ -12,8 +12,8 @@ using ParrotdiseShop.Persistence.Data;
 namespace ParrotdiseShop.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230818204036_foo")]
-    partial class foo
+    [Migration("20230823114615_RenameToProvinceInAspNetUsersTbl")]
+    partial class RenameToProvinceInAspNetUsersTbl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -511,7 +511,7 @@ namespace ParrotdiseShop.Persistence.Migrations
             modelBuilder.Entity("ParrotdiseShop.Core.Models.OrderDetail", b =>
                 {
                     b.HasOne("ParrotdiseShop.Core.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -555,6 +555,11 @@ namespace ParrotdiseShop.Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ParrotdiseShop.Core.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

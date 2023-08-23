@@ -12,7 +12,7 @@ namespace ParrotdiseShop.Core.ViewModels
     public class ShoppingCartViewModel
     {
         public IEnumerable<ShoppingCartItemDto> ShoppingCartItems { get; set; }
-        public Order Order { get; set; }
+        public OrderDto Order { get; set; }
         public IEnumerable<SelectListItem> Provinces { get; set; }
         public decimal Total
         {
