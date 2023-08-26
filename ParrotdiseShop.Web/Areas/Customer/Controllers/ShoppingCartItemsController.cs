@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
@@ -152,13 +153,8 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (!viewModel.IsValid)
                 return RedirectToAction(nameof(Index));
 
-            viewModel.Order.UserId = userId;
-            viewModel.Order.Total = viewModel.Total;
-            viewModel.Order.Status = OrderStatus.StatusPending;
-            viewModel.Order.PaymentStatus = OrderStatus.PaymentStatusPending;
-            viewModel.Order.CreationDate = DateTime.Now;
-
             var order = _mapper.Map<Order>(viewModel.Order);
+            order.Create(userId, viewModel.Total);
 
             _unitOfWork.Orders.Add(order);
             _unitOfWork.Complete();
@@ -225,10 +221,32 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 			#endregion
         }
 
-
         public IActionResult OrderConfirmation(int id)
         {
-            return View(nameof(OrderConfirmation));
-        }
+			var order = _unitOfWork.Orders.GetOrderWithUser(id);
+
+			if (order == null)
+				return NotFound();
+
+			var service = new SessionService();
+			var session = service.Get(order.PaymentSessionId);
+
+			// check the stripe status
+			if (session.PaymentStatus.ToLower() == "paid")
+			{
+				order.UpdateStripePaymentId(session.PaymentIntentId);
+				order.UpdatePaymentStatus(OrderStatus.StatusApproved, OrderStatus.PaymentStatusApproved);
+				_unitOfWork.Complete();
+			}
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsBy(order.UserId);
+
+            //clear out the shopping cart
+			_unitOfWork.ShoppingCartItems.RemoveRange(shoppingCartItems);
+			_unitOfWork.Complete();
+
+			return View(order);
+		}
     }
 }

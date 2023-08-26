@@ -39,9 +39,35 @@ namespace ParrotdiseShop.Core.Models
             StreetAddress = customer.StreetAddress;
         }
 
-		public void UpdateStripeSessionId(string sessionId)
+        public void Create(string userId, decimal total)
+        {
+            UserId = userId;
+            Total = total;
+            Status = OrderStatus.StatusPending;
+            PaymentStatus = OrderStatus.PaymentStatusPending;
+            CreationDate = DateTime.Now;
+        }
+
+        public void UpdateStripeSessionId(string sessionId)
 		{
-			PaymentSessionId = sessionId;
+            PaymentSessionId = sessionId;
 		}
-	}
+
+        public void UpdateStripePaymentId(string paymentId)
+        {
+            if (PaymentSessionId == null)
+                return;
+
+            PaymentIntentId = paymentId;
+            PaymentDate = DateTime.Now;
+        }
+
+        public void UpdatePaymentStatus(string status, string? paymentStatus = null)
+        {
+            Status = status;
+
+            if (paymentStatus != null)
+                PaymentStatus = paymentStatus;
+        }
+    }
 }
