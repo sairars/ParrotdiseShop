@@ -14,10 +14,11 @@ namespace ParrotdiseShop.Persistence.Repositories
 			_context = context;
         }
 
-		public Order? GetOrderWithUser(int id)
+		public Order? GetOrderWithUserAndOrderDetails(int id)
 		{
 			return _context.Orders
 						.Include(o => o.User)
+						.Include(o => o.OrderDetails)
 						.SingleOrDefault(o => o.Id == id);
 		}
 	}

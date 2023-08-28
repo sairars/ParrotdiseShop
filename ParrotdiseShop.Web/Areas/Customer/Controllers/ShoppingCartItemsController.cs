@@ -223,7 +223,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
-			var order = _unitOfWork.Orders.GetOrderWithUser(id);
+			var order = _unitOfWork.Orders.GetOrderWithUserAndOrderDetails(id);
 
 			if (order == null)
 				return NotFound();
