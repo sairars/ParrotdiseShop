@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
@@ -9,7 +7,6 @@ using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 using Stripe.Checkout;
 using System.Security.Claims;
-using static System.Net.WebRequestMethods;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
@@ -223,7 +220,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
-			var order = _unitOfWork.Orders.GetOrderWithUserAndOrderDetails(id);
+			var order = _unitOfWork.Orders.GetOrderDetailsWithUser(id);
 
 			if (order == null)
 				return NotFound();

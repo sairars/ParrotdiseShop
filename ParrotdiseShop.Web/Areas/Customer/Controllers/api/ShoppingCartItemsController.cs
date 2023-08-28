@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
 using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api

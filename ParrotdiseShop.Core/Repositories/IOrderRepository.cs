@@ -4,6 +4,8 @@ namespace ParrotdiseShop.Core.Repositories
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        Order? GetOrderWithUserAndOrderDetails(int id);
+        Order? GetOrderDetailsWithUser(int id);
+
+        IEnumerable<Order> GetAllOrdersWithUser();
     }
 }

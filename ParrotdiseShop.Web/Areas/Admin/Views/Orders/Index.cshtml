@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Orders";
+}
+
+<div class="container">
+    <div class="row my-5">
+        <div class="col-6">
+            <h2 class="text-primary">Orders</h2>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered" id="Orders">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<partial name="_Notification">
+
+@section Scripts {
+    <script src="~/js/orders/orders.js"></script>
+}

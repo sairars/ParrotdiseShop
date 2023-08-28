@@ -14,7 +14,12 @@ namespace ParrotdiseShop.Persistence.Repositories
 			_context = context;
         }
 
-		public Order? GetOrderWithUserAndOrderDetails(int id)
+		public IEnumerable<Order> GetAllOrdersWithUser()
+		{
+			return _context.Orders.Include(o => o.User);
+		}
+
+		public Order? GetOrderDetailsWithUser(int id)
 		{
 			return _context.Orders
 						.Include(o => o.User)
