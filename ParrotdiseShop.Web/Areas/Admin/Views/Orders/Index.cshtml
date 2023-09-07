@@ -2,12 +2,103 @@
     ViewData["Title"] = "Orders";
 }
 
-<div class="container">
+
+<div class="container p-3">
+    <div class="row d-flex justify-content-between pt-4">
+        <div class="p-2">
+            <h2 class="text-primary text-start">Orders</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7 offset-5">
+            <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item" data-status="All">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="All">
+                        All
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusPending">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusPending">
+                        @OrderStatus.StatusPending
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusApproved">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusApproved">
+                        @OrderStatus.StatusApproved
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusProcessing">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusProcessing">
+                        @OrderStatus.StatusProcessing
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusShipped">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusShipped">
+                        @OrderStatus.StatusShipped
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusCancelled">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusCancelled">
+                        @OrderStatus.StatusCancelled
+                    </a>
+                </li>
+                <li class="list-group-item" data-status="@OrderStatus.StatusDisabled">
+                    <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusDisabled">
+                        @OrderStatus.StatusDisabled
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@*<div class="row my-4">
+    <div class="col-md-12 text-center">
+        <ul class="list-group list-group-horizontal center-pills">
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="All">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="All">
+                    All
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusPending">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusPending">
+                    @OrderStatus.StatusPending
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusApproved">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusApproved">
+                    @OrderStatus.StatusApproved
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusProcessing">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusProcessing">
+                    @OrderStatus.StatusProcessing
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusShipped">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusShipped">
+                    @OrderStatus.StatusShipped
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusCancelled">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusCancelled">
+                    @OrderStatus.StatusCancelled
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-5 border-0 btn btn-sm" data-status="@OrderStatus.StatusDisabled">
+                <a class="fw-semibold text-uppercase" asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.StatusDisabled">
+                    @OrderStatus.StatusDisabled
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>*@
+
+@*<div class="container">
     <div class="row my-5">
         <div class="col-6">
             <h2 class="text-primary">Orders</h2>
         </div>
-    </div>
+    </div>*@
     <table class="table table-striped table-bordered" id="Orders">
         <thead>
             <tr>
@@ -20,9 +111,7 @@
             </tr>
         </thead>
     </table>
-</div>
-
-<partial name="_Notification">
+@*</div>*@
 
 @section Scripts {
     <script src="~/js/orders/orders.js"></script>

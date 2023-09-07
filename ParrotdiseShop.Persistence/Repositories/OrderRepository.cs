@@ -26,5 +26,12 @@ namespace ParrotdiseShop.Persistence.Repositories
 						.Include(o => o.OrderDetails)
 						.SingleOrDefault(o => o.Id == id);
 		}
-	}
+
+        public IEnumerable<Order> GetOrdersWithUserBy(string status)
+        {
+			return _context.Orders
+						.Include(o => o.User)
+						.Where(o => status.Equals("all", StringComparison.OrdinalIgnoreCase) || o.Status == status);
+        }
+    }
 }

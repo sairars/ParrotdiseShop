@@ -1,13 +1,20 @@
 ﻿$(document).ready(function () {
     let container = $('#Orders');
+  
     loadDataTable(container);
 });
 
 let loadDataTable = function (container) {
+    let href = $(location).attr('href');
+    let selectedStatus = new URL(href).searchParams.get('status');
+
+    if (selectedStatus == null)
+        selectedStatus = 'All';
+
     table = container.DataTable({
         order: [[1, 'asc']],
         ajax: {
-            url: '/admin/api/orders',
+            url: `/admin/api/orders/${selectedStatus}`,
             dataSrc: ''
         },
         columns: [
@@ -33,5 +40,17 @@ let loadDataTable = function (container) {
                 data: 'total'
             }
         ]
+    });
+
+    $('.list-group-item').each(function () {
+
+        let listItem = $(this);
+        listItem.removeClass('active');
+
+        let thisStatus = listItem.attr('data-status');
+
+        if (thisStatus == selectedStatus) {
+            listItem.addClass('active');
+        }
     });
 };

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.ViewModels;
 using ParrotdiseShop.Persistence;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
@@ -21,9 +22,10 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult GetOrders()
+        [Route("{status}")]
+        public IActionResult GetOrders(string status)
 		{
-			return Ok(_unitOfWork.Orders.GetAllOrdersWithUser());
+            return Ok(_unitOfWork.Orders.GetOrdersWithUserBy(status));
 		}
 	}
 }
