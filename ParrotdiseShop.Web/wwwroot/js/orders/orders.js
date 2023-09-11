@@ -1,10 +1,12 @@
 ﻿$(document).ready(function () {
+
     let container = $('#Orders');
   
     loadDataTable(container);
 });
 
 let loadDataTable = function (container) {
+
     let href = $(location).attr('href');
     let selectedStatus = new URL(href).searchParams.get('status');
 
@@ -21,7 +23,7 @@ let loadDataTable = function (container) {
             {
                 data: 'id',
                 render: function (data) {
-                    return `<a href="/admin/orders/edit/${data}">${data}</a>`;
+                    return `<a href="/admin/orders/details/${data}">${data}</a>`;
                 }
             },
             {

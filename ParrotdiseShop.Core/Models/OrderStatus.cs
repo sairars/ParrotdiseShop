@@ -7,7 +7,6 @@
         public const string StatusProcessing = "Processing";
         public const string StatusShipped = "Shipped";
         public const string StatusCancelled = "Cancelled";
-        public const string StatusDisabled = "Disabled";
         public const string PaymentStatusPending = "PaymentPending";
 		public const string PaymentStatusApproved = "PaymentApproved";
 	}

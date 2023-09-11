@@ -5,11 +5,15 @@ using ParrotdiseShop.Core.Models;
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	[Authorize(Roles = RoleName.Admin)]
-
+	[Authorize]
 	public class OrdersController : Controller
 	{
 		public IActionResult Index()
+		{
+			return View();
+		}
+
+		public IActionResult Details(int id)
 		{
 			return View();
 		}

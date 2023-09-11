@@ -31,7 +31,19 @@ namespace ParrotdiseShop.Persistence.Repositories
         {
 			return _context.Orders
 						.Include(o => o.User)
-						.Where(o => status.Equals("all", StringComparison.OrdinalIgnoreCase) || o.Status == status);
+						.Where(o => (status.Equals("all", StringComparison.OrdinalIgnoreCase) 
+									|| o.Status == status)
+									&& o.Status != OrderStatus.StatusPending);
+        }
+
+        public IEnumerable<Order> GetUserOrdersBy(string status, string userId)
+        {
+            return _context.Orders
+						.Include(o => o.User)
+						.Where(o => (status.Equals("all", StringComparison.OrdinalIgnoreCase) 
+										|| o.Status == status) 
+									&& o.UserId == userId
+									&& o.Status != OrderStatus.StatusPending);
         }
     }
 }

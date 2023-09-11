@@ -7,5 +7,6 @@ namespace ParrotdiseShop.Core.Repositories
         Order? GetOrderDetailsWithUser(int id);
         IEnumerable<Order> GetAllOrdersWithUser();
         IEnumerable<Order> GetOrdersWithUserBy(string status);
+        IEnumerable<Order> GetUserOrdersBy(string status, string userId);
     }
 }
