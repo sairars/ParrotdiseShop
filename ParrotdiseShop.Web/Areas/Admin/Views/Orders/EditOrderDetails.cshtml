@@ -30,71 +30,104 @@
                                 </h3>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Name</span></div>
+                                <div class="col-3">Name</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.Name</label>
-                                </div> 
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Phone</span></div>
-                                <div class="col-9">
-                                    <label>@Model.Order.PhoneNumber</label>
+                                    <input asp-for="Order.Name" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.Name" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Address</span></div>
+                                <div class="col-3">Phone</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.StreetAddress</label>
+                                    <input asp-for="Order.PhoneNumber" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">City</span></div>
+                                <div class="col-3">Address</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.City</label>
+                                    <input asp-for="Order.StreetAddress" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.StreetAddress" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">State</span></div>
+                                <div class="col-3">City</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.Province</label>
+                                    <input asp-for="Order.City" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.City" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Postal Code</span></div>
+                                <div class="col-3">State</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.PostalCode</label>
+                                    <input asp-for="Order.Province" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.Province" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Email</span></div>
+                                <div class="col-3">Postal Code</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.User.Email</label>
+                                    <input asp-for="Order.PostalCode" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Order Date</span></div>
+                                <div class="col-3">Email</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.CreationDate.ToShortDateString()</label>
+                                    <input asp-for="Order.User.Email" type="text" class="form-control" disabled />
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Carrier</span></div>
+                                <div class="col-3">Order Date</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.Carrier</label>
+                                    <input value="@Model.Order.CreationDate.ToShortDateString()" type="text" class="form-control" disabled />
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Tracking</span></div>
+                                <div class="col-3">Carrier</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.TrackingNumber</label>
+                                    <input id="carrier" asp-for="Order.Carrier" type="text" class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Shipping Date</span></div>
+                                <div class="col-3">Tracking</div>
                                 <div class="col-9">
-                                    <label>@Model.Order.ShippingDate.ToShortDateString()</label>
+                                    <input id="trackingNumber" asp-for="Order.TrackingNumber" type="text" class="form-control" />
                                 </div>
                             </div>
+                            <div class="row my-1">
+                                <div class="col-3">Shipping Date</div>
+                                <div class="col-9">
+                                    <input value="@Model.Order.ShippingDate.ToShortDateString()" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Session ID</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.PaymentSessionId" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Payment Intent ID</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.PaymentIntentId" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Payment Date</div>
+                                <div class="col-9">
+                                    <input value="@Model.Order.PaymentDate.ToShortDateString()" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Payment Status</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.PaymentStatus" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning form-control" asp-action="Update">Update Order Details</button>
+
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
                             <h3 class="d-flex justify-content-between align-items-center mb-3">
@@ -130,6 +163,23 @@
                                     </div>
                                 </li>
                             </ul>
+
+                            @if (Model.Order.Status == OrderStatus.StatusApproved)
+                            {
+                                <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" asp-action="Process" />
+                            }
+
+                            @if (Model.Order.Status == OrderStatus.StatusProcessing)
+                            {
+                                <input type="submit" class="btn btn-primary form-control my-1 js-validate-shipping" value="Ship Order" asp-action="Ship" />
+                            }
+
+                            @if (Model.Order.Status != OrderStatus.StatusCancelled
+                            && Model.Order.Status != OrderStatus.StatusShipped)
+                            {
+                                <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" asp-action="Cancel" />
+                            }
+                            
                         </div>
                     </div>
                 </div>
