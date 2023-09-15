@@ -26,75 +26,113 @@
                         <div class="col-12 col-lg-6 pb-4">
                             <div class="row">
                                 <h3 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-primary">Pick Up Details:</span>
+                                    <span class="text-primary">Shipping Details:</span>
                                 </h3>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Name</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Name</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.Name</label>
                                 </div> 
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Phone</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Phone</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.PhoneNumber</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Address</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Address</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.StreetAddress</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">City</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">City</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.City</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">State</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Province</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.Province</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Postal Code</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Postal Code</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.PostalCode</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Email</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Email</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.User.Email</label>
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Order Date</span></div>
+                                <div class="col-3">
+                                    <span class="fw-bold">Order Date</span>
+                                </div>
                                 <div class="col-9">
                                     <label>@Model.Order.CreationDate.ToShortDateString()</label>
                                 </div>
                             </div>
-                            <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Carrier</span></div>
-                                <div class="col-9">
-                                    <label>@Model.Order.Carrier</label>
+
+                            @if (Model.Order.Status == OrderStatus.StatusShipped)
+                            {
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <span class="fw-bold">Carrier</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <label>@Model.Order.Carrier</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Tracking</span></div>
-                                <div class="col-9">
-                                    <label>@Model.Order.TrackingNumber</label>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <span class="fw-bold">Tracking</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <label>@Model.Order.TrackingNumber</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3"><span class="fw-bold">Shipping Date</span></div>
-                                <div class="col-9">
-                                    <label>@Model.Order.ShippingDate.ToShortDateString()</label>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <span class="fw-bold">Shipping Date</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <label>@Model.Order.ShippingDate.ToShortDateString()</label>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <span class="fw-bold">Shipping Date</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <label>Not Yet Shipped</label>
+                                    </div>
+                                </div>
+                            }
+
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
                             <h3 class="d-flex justify-content-between align-items-center mb-3">

@@ -12,12 +12,12 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 	{
 		private readonly IUnitOfWork _unitOfWork;
 
-        public OrdersController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+		public OrdersController(IUnitOfWork unitOfWork)
+		{
+			_unitOfWork = unitOfWork;
+		}
 
-        public IActionResult Index()
+		public IActionResult Index()
 		{
 			return View();
 		}
@@ -25,20 +25,85 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 		public IActionResult Details(int id)
 		{
 			var order = _unitOfWork.Orders.GetOrderDetailsWithUser(id);
-			
+
 			if (order == null)
 				return NotFound();
 
 			var viewModel = new OrdersViewModel
 			{
 				Order = order,
-				OrderDetails = _unitOfWork.OrderDetails.GetOrderDetailsBy(id)
+				OrderDetails = _unitOfWork.OrderDetails.GetOrderDetailsBy(id),
+				Provinces = CanadianProvinces.Provinces
 			};
 
 			if (User.IsInRole(RoleName.Customer))
-				return View("Details", viewModel);
+				return View("ViewOrderDetails", viewModel);
 			else
-				return View("EditOrderDetails", viewModel);
+				return View("UpdateOrderDetails", viewModel);
 		}
-	}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
+		public IActionResult UpdateCustomerInformation(OrdersViewModel viewModel)
+		{
+			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
+
+			if (orderFromDb == null)
+				return NotFound();
+
+			orderFromDb.UpdateCustomerInformation(viewModel.Order);
+			_unitOfWork.Complete();
+
+			TempData["info"] = "Customer Information updated successfully";
+
+			return RedirectToAction(nameof(Details), new { id = viewModel.Order.Id });
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
+		public IActionResult Process(OrdersViewModel viewModel)
+		{
+			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
+
+			if (orderFromDb == null)
+				return NotFound();
+
+			orderFromDb.UpdateStatus(OrderStatus.StatusProcessing);
+			_unitOfWork.Complete();
+
+			return RedirectToAction(nameof(Details), new { id = viewModel.Order.Id });
+		}
+
+		[HttpPost]
+		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
+		public IActionResult Ship(OrdersViewModel viewModel)
+		{
+			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
+
+			if (orderFromDb == null)
+				return NotFound();
+
+			orderFromDb.UpdateShippingInformation(viewModel.Order.Carrier, viewModel.Order.TrackingNumber);
+			_unitOfWork.Complete();
+
+			return RedirectToAction(nameof(Details), new { id = viewModel.Order.Id });
+		}
+
+		[HttpPost]
+        [Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
+        public IActionResult Cancel(int id)
+        {
+            var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == id);
+
+            if (orderFromDb == null)
+                return NotFound();
+
+            orderFromDb.UpdateStatus(OrderStatus.StatusCancelled);
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+    }
 }

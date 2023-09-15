@@ -232,7 +232,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 			if (session.PaymentStatus.ToLower() == "paid")
 			{
 				order.UpdateStripePaymentId(session.PaymentIntentId);
-				order.UpdatePaymentStatus(OrderStatus.StatusApproved, OrderStatus.PaymentStatusApproved);
+				order.UpdateStatus(OrderStatus.StatusApproved, OrderStatus.PaymentStatusApproved);
 				_unitOfWork.Complete();
 			}
 

@@ -1,28 +1,52 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ParrotdiseShop.Core.Models
 {
     public class Order
     {
         public int Id { get; set; }
+
         public string UserId { get; set; }
+
         public ApplicationUser User { get; set; }
+
         public DateTime CreationDate { get; set; }
+
         public DateTime ShippingDate { get; set; }
+
         public decimal Total { get; set; }
+
         public string Status { get; set; }
+
         public string PaymentStatus { get; set; }
+
         public string? TrackingNumber { get; set; }
+
         public string? Carrier { get; set; }
+
         public DateTime PaymentDate { get; set; }
+
         public string? PaymentSessionId { get; set; }
+
         public string? PaymentIntentId { get; set; }
+
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
+
         public string City { get; set; }
+
         public string Province { get; set; }
+
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
+
         public string Name { get; set; }
+
         public ICollection<OrderDetail> OrderDetails { get; } = new Collection<OrderDetail>();
 
         public Order()
@@ -62,12 +86,30 @@ namespace ParrotdiseShop.Core.Models
             PaymentDate = DateTime.Now;
         }
 
-        public void UpdatePaymentStatus(string status, string? paymentStatus = null)
+        public void UpdateStatus(string status, string? paymentStatus = null)
         {
             Status = status;
 
             if (paymentStatus != null)
                 PaymentStatus = paymentStatus;
+        }
+
+        public void UpdateCustomerInformation(Order order)
+        {
+            Name = order.Name;
+            PhoneNumber = order.PhoneNumber;
+            StreetAddress = order.StreetAddress;
+            City = order.City;
+            Province = order.Province;
+            PostalCode = order.PostalCode;
+        }
+
+        public void UpdateShippingInformation(string carrier, string trackingNumber)
+        {
+            ShippingDate = DateTime.Now;
+            Status = OrderStatus.StatusShipped;
+            Carrier = carrier;
+            TrackingNumber = trackingNumber;
         }
     }
 }

@@ -4,8 +4,8 @@
     ViewData["Title"] = "Order Details";
 }
 
-<form method="post">
-    <br />
+<form method="post" id="orderDetails">
+    <input asp-for="Order.Id" hidden />
     <div class="container">
         <div class="card shadow border-0 mt-4">
             <div class="card-header bg-secondary bg-gradient text-light py-4">
@@ -23,10 +23,10 @@
                 </div>
                 <div class="container rounded p-2">
                     <div class="row">
-                        <div class="col-12 col-lg-6 pb-4">
+                        <div class="col-12 col-lg-6 pb-0">
                             <div class="row">
                                 <h3 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-primary">Pick Up Details:</span>
+                                    <span class="text-primary">Shipping Details:</span>
                                 </h3>
                             </div>
                             <div class="row my-1">
@@ -58,9 +58,11 @@
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3">State</div>
+                                <div class="col-3">Province</div>
                                 <div class="col-9">
-                                    <input asp-for="Order.Province" type="text" class="form-control" />
+                                    <select asp-for="Order.Province" asp-items="@Model.Provinces" class="form-select">
+                                        <option disabled selected>Please select one</option>
+                                    </select>
                                     <span asp-validation-for="Order.Province" class="text-danger"></span>
                                 </div>
                             </div>
@@ -86,13 +88,13 @@
                             <div class="row my-1">
                                 <div class="col-3">Carrier</div>
                                 <div class="col-9">
-                                    <input id="carrier" asp-for="Order.Carrier" type="text" class="form-control" />
+                                    <input id="carrier" asp-for="Order.Carrier" type="text" class="form-control" disabled />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Tracking</div>
                                 <div class="col-9">
-                                    <input id="trackingNumber" asp-for="Order.TrackingNumber" type="text" class="form-control" />
+                                    <input id="trackingNumber" asp-for="Order.TrackingNumber" type="text" class="form-control" disabled />
                                 </div>
                             </div>
                             <div class="row my-1">
@@ -125,9 +127,7 @@
                                     <input asp-for="Order.PaymentStatus" type="text" class="form-control" disabled />
                                 </div>
                             </div>
-
-                            <button type="submit" class="btn btn-warning form-control" asp-action="Update">Update Order Details</button>
-
+                            <button type="submit" class="btn btn-secondary text-uppercase form-control mt-2 nb-0" asp-controller="Orders" asp-action="UpdateCustomerInformation">Update Customer Information</button>
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
                             <h3 class="d-flex justify-content-between align-items-center mb-3">
@@ -166,18 +166,18 @@
 
                             @if (Model.Order.Status == OrderStatus.StatusApproved)
                             {
-                                <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" asp-action="Process" />
+                                <button type="submit" class="btn btn-primary text-uppercase form-control my-1" asp-controller="Orders" asp-action="Process">Start Processing</button>
                             }
 
                             @if (Model.Order.Status == OrderStatus.StatusProcessing)
                             {
-                                <input type="submit" class="btn btn-primary form-control my-1 js-validate-shipping" value="Ship Order" asp-action="Ship" />
+                                <button type="button" class="btn btn-primary text-uppercase form-control my-1 js-shipping" data-order-id="@Model.Order.Id">Ship Order</button>
                             }
 
                             @if (Model.Order.Status != OrderStatus.StatusCancelled
                             && Model.Order.Status != OrderStatus.StatusShipped)
                             {
-                                <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" asp-action="Cancel" />
+                                <button type="button" class="btn btn-danger text-uppercase form-control my-1 js-cancel" data-order-id="@Model.Order.Id">Cancel Order</button>
                             }
                             
                         </div>
@@ -187,3 +187,13 @@
         </div>
     </div>
 </form>
+
+<partial name="_Notification">
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+        <script src="~/js/orders/orderDetails.js"></script>
+}
