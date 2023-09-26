@@ -73,7 +73,7 @@
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         $(document).ready(function () {
-            $.get("/customer/api/ShoppingCartItems", function (shoppingCartItems) {
+            $.get("/customer/api/ShoppingCartItems", function (noOfShoppingCartItems) {
                 if (noOfShoppingCartItems === 0)
                     return;
 
