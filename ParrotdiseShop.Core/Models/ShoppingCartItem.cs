@@ -23,6 +23,8 @@ namespace ParrotdiseShop.Core.Models
         [Range(1,1000, ErrorMessage = "Must be between 1 and 1000")]
         public int Quantity { get; set; }
 
+        public DateTime Created { get; set; }
+
         public void Increment(int quantity)
         {
             Quantity += quantity;

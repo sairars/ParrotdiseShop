@@ -85,6 +85,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 else
                 {
                     shoppingCartItem.UserId = userId;
+                    shoppingCartItem.Created = DateTime.Now;
                     _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
                 }
             }
@@ -111,6 +112,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 else
                 {
                     shoppingCartItem.GuestCookieId = guestCookieId;
+                    shoppingCartItem.Created = DateTime.Now;
                     _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
                 }
             }
