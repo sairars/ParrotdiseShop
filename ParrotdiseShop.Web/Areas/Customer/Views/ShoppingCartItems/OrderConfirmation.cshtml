@@ -1,4 +1,4 @@
-﻿@model Order
+﻿@model OrderViewModel
 
 @{
 	ViewData["Title"] = "Order Confirmation";
@@ -27,43 +27,43 @@
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Order Number:</strong> @Model.Id
+					<strong>Order Number:</strong> @Model.Order.Id
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Name:</strong> @Model.Name
+					<strong>Name:</strong> @Model.Order.Name
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Phone:</strong> @Model.PhoneNumber
+					<strong>Phone:</strong> @Model.Order.PhoneNumber
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Street Address:</strong> @Model.StreetAddress
+					<strong>Street Address:</strong> @Model.Order.StreetAddress
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>City:</strong> @Model.City
+					<strong>City:</strong> @Model.Order.City
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Province:</strong> @Model.Province
+					<strong>Province:</strong> @Model.Order.Province
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12">
-					<strong>Postal Code:</strong> @Model.PostalCode
+					<strong>Postal Code:</strong> @Model.Order.PostalCode
 				</div>
 			</div>
 		</div>
@@ -86,7 +86,7 @@
 
 				<li class="list-group-item d-flex justify-content-between bg-light">
 					<small class="text-info">Total</small>
-					<strong class="text-info">@Model.Total.ToString("c")</strong>
+					<strong class="text-info">@Model.Order.Total.ToString("c")</strong>
 				</li>
 			</ul>
 		</div>

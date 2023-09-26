@@ -14,7 +14,14 @@ namespace ParrotdiseShop.Persistence.Repositories
             _context = context;
         }
 
-        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsBy(string userId)
+        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsByCookie(string? guestcookieId)
+        {
+            return _context.ShoppingCartItems
+                        .Where(sc => sc.GuestCookieId == guestcookieId)
+                        .Include(sc => sc.Product);
+        }
+
+        public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsByUser(string userId)
         {
             return _context.ShoppingCartItems
                         .Where(sc => sc.UserId == userId)

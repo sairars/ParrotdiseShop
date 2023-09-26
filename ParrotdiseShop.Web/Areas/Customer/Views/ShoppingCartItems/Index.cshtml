@@ -101,10 +101,17 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3 offset-md-7">
-                            <button asp-action="Checkout" class="btn btn-primary border-0 bg-gradient w-100 py-2 fw-semibold text-uppercase">Checkout</button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-3 offset-md-7">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button asp-controller="ShoppingCartItems" asp-action="Checkout" class="btn btn-primary border-0 bg-gradient w-100 py-2 fw-semibold text-uppercase">Checkout</button>
+                        }
+                        else
+                        {
+                            <button asp-controller="ShoppingCartItems" asp-action="CheckoutChoice" class="btn btn-primary border-0 bg-gradient w-100 py-2 fw-semibold text-uppercase">Checkout</button>
+                        }
+                    </div>
                     </div>
                 }
                 else if (!Model.ShoppingCartItems.Any())

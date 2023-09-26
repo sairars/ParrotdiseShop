@@ -9,6 +9,6 @@ namespace ParrotdiseShop.Core.Repositories
 {
     public interface IOrderDetailRepository : IRepository<OrderDetail>
     {
-        IEnumerable<OrderDetail> GetOrderDetailsBy(int orderId);
+        IEnumerable<OrderDetail> GetOrderDetailsWithProductBy(int orderId);
     }
 }

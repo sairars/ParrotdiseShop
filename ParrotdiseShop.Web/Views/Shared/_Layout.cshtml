@@ -74,12 +74,12 @@
     <script>
         $(document).ready(function () {
             $.get("/customer/api/ShoppingCartItems", function (shoppingCartItems) {
-                if (shoppingCartItems.length === 0)
+                if (noOfShoppingCartItems === 0)
                     return;
 
                 let badge = $('.js-cart-count');
                 badge
-                    .text(shoppingCartItems.length)
+                    .text(noOfShoppingCartItems)
                     .removeClass('invisible')
             });
         });

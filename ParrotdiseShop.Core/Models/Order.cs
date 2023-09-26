@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace ParrotdiseShop.Core.Models
 {
@@ -8,9 +6,11 @@ namespace ParrotdiseShop.Core.Models
     {
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public string? GuestCookieId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public string? UserId { get; set; }
+
+        public ApplicationUser? User { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -32,17 +32,14 @@ namespace ParrotdiseShop.Core.Models
 
         public string? PaymentIntentId { get; set; }
 
-        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
 
         public string City { get; set; }
 
         public string Province { get; set; }
 
-        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
         public string Name { get; set; }
@@ -63,9 +60,10 @@ namespace ParrotdiseShop.Core.Models
             StreetAddress = customer.StreetAddress;
         }
 
-        public void Create(string userId, decimal total)
+        public void Create(string? userId, string? guestCookieId, decimal total)
         {
             UserId = userId;
+            GuestCookieId = guestCookieId;
             Total = total;
             Status = OrderStatus.StatusPending;
             PaymentStatus = OrderStatus.PaymentStatusPending;

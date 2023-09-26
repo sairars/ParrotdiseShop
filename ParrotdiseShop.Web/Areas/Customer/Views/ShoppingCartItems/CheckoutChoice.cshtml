@@ -1,0 +1,41 @@
+﻿@{
+	ViewData["Title"] = "How to Checkout?";
+}
+
+
+<div class="container">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient text-light py-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-white text-uppercase">
+                        Checkout
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container overflow-hidden text-center">
+                <div class="row gx-5">
+                    <div class="col">
+                        <div class="p-3">
+                            <a asp-controller="ShoppingCartItems" asp-action="CheckoutAsGuest" class="btn btn-lg btn-outline-primary">
+                                Checkout As Guest
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3">
+                            <a asp-controller="ShoppingCartItems" asp-action="Checkout" class="btn btn-lg btn-outline-primary">
+                                Login Or Create Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

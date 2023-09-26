@@ -7,11 +7,13 @@ namespace ParrotdiseShop.Core.Models
     {
         public int Id { get; set; }
 
-        [ValidateNever]
-        public string UserId  { get; set; }
+        public string? GuestCookieId { get; set; }
 
         [ValidateNever]
-        public ApplicationUser User { get; set; }
+        public string? UserId  { get; set; }
+
+        [ValidateNever]
+        public ApplicationUser? User { get; set; }
 
         public int ProductId { get; set; }
 
@@ -31,5 +33,9 @@ namespace ParrotdiseShop.Core.Models
             Quantity--;
         }
 
+        public void UpdateUserId(string userId)
+        {
+            UserId = userId;
+        }
     }
 }

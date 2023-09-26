@@ -11,7 +11,6 @@ using System.Security.Claims;
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
     public class ShoppingCartItemsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,11 +26,23 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-			var claimsIdentity = (ClaimsIdentity)User.Identity;
-			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<ShoppingCartItem> shoppingCartItems;
 
-			var shoppingCartItems = _unitOfWork.ShoppingCartItems
-                                        .GetAllShoppingCartItemsWithProductsBy(userId);
+            if (User.Identity.IsAuthenticated)
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByUser(userId);
+            }
+            else
+            {
+                var guestCookieId = Request.Cookies["ShoppingCart"];
+
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
+            }
 
             var viewModel = new ShoppingCartViewModel
             {
@@ -104,19 +115,25 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Checkout(ShoppingCartViewModel viewModel)
+        [Authorize]
+        public IActionResult Checkout()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var shoppingCartItems = _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId);
+            TransferGuestShoppingCartToCustomerAccount(userId);
 
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByUser(userId);
+
+            //nothing to checkout
             if (!shoppingCartItems.Any())
                 return NotFound();
 
-            viewModel.ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems);
+            var viewModel = new ShoppingCartViewModel
+            {
+                ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems)
+            };
 
             if (!viewModel.IsValid)
                 return RedirectToAction(nameof(Index));
@@ -128,19 +145,62 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             viewModel.Order = _mapper.Map<OrderDto>(new Order(customer));
             viewModel.Provinces = CanadianProvinces.Provinces;
-            
+
             return View(viewModel);
+        }
+
+        public IActionResult CheckoutChoice()
+        {
+            // give end users the choice to login or continue as guest
+            return View();
+        }
+
+        public IActionResult CheckoutAsGuest()
+        {
+            var guestCookieId = Request.Cookies["ShoppingCart"];
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
+
+            if (!shoppingCartItems.Any())
+                return NotFound();
+
+            var viewModel = new ShoppingCartViewModel
+            {
+                ShoppingCartItems = _mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems)
+            };
+
+            if (!viewModel.IsValid)
+                return RedirectToAction(nameof(Index));
+
+            viewModel.Order = _mapper.Map<OrderDto>(new Order());
+            viewModel.Provinces = CanadianProvinces.Provinces;
+
+            return View(nameof(Checkout), viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult PlaceOrder(ShoppingCartViewModel viewModel)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<ShoppingCartItem> shoppingCartItems;
+            string? userId;
 
-            var shoppingCartItems = _unitOfWork.ShoppingCartItems
-                                        .GetAllShoppingCartItemsWithProductsBy(userId);
+            if (User.Identity.IsAuthenticated)
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByUser(userId);
+            }
+            else
+            {
+                userId = Request.Cookies["ShoppingCart"];
+
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(userId);
+            }
 
             if (!shoppingCartItems.Any())
                 return NotFound();
@@ -151,7 +211,11 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 return RedirectToAction(nameof(Index));
 
             var order = _mapper.Map<Order>(viewModel.Order);
-            order.Create(userId, viewModel.Total);
+            
+            if (User.Identity.IsAuthenticated)
+                order.Create(userId, null, viewModel.Total);
+            else
+                order.Create(null, userId, viewModel.Total);
 
             _unitOfWork.Orders.Add(order);
             _unitOfWork.Complete();
@@ -236,14 +300,49 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 				_unitOfWork.Complete();
 			}
 
-            var shoppingCartItems = _unitOfWork.ShoppingCartItems
-                                        .GetAllShoppingCartItemsWithProductsBy(order.UserId);
+            IEnumerable<ShoppingCartItem> shoppingCartItems;
 
-            //clear out the shopping cart
-			_unitOfWork.ShoppingCartItems.RemoveRange(shoppingCartItems);
+            // Get shopping cart from db using cookie id if guest user or user id 
+            // if user is logged in 
+            if (User.Identity.IsAuthenticated)
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByUser(order.UserId);
+            else
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(order.GuestCookieId);
+
+            //clear out the shopping cart from db
+            _unitOfWork.ShoppingCartItems.RemoveRange(shoppingCartItems);
 			_unitOfWork.Complete();
+ 
+            // clear out the shopping cart cookie from the user's machine if exists
+            if (Request.Cookies["ShoppingCart"] != null)
+                Response.Cookies.Delete("ShoppingCart");
 
-			return View(order);
+            var viewModel = new OrderViewModel
+            {
+                Order = _mapper.Map<OrderDto>(order),
+			    OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(_unitOfWork.OrderDetails.GetOrderDetailsWithProductBy(order.Id))
+            };
+
+            return View(viewModel);
 		}
+
+        private void TransferGuestShoppingCartToCustomerAccount(string userId)
+        {
+            var guestCookieId = Request.Cookies["ShoppingCart"];
+
+            if (guestCookieId == null)
+                return;
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
+            foreach (var item in shoppingCartItems)
+                item.UpdateUserId(userId);
+
+            _unitOfWork.Complete();
+
+            Response.Cookies.Delete("ShoppingCart");
+        }
     }
 }

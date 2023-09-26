@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
@@ -37,7 +36,6 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
-        [Authorize]
         public IActionResult Details(int id)
         {
             var productFromDb = _unitOfWork.Products.GetProductWithCategory(id);
@@ -57,7 +55,6 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public IActionResult AddToCart(ShoppingCartItem shoppingCartItem)
         {
             var productFromDb = _unitOfWork.Products.GetProductWithCategory(shoppingCartItem.ProductId);
@@ -75,18 +72,47 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if(!ModelState.IsValid)
                 return View(nameof(Details), shoppingCartItem);
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (User.Identity.IsAuthenticated)
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.UserId == userId
+                var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.UserId == userId
                                                                             && sc.ProductId == shoppingCartItem.ProductId);
 
-            if (shoppingCartItemFromDb != null)
-                shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
+                if (shoppingCartItemFromDb != null)
+                    shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
+                else
+                {
+                    shoppingCartItem.UserId = userId;
+                    _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
+                }
+            }
             else
             {
-                shoppingCartItem.UserId = userId;
-                _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
+                var guestCookieId = Request.Cookies["ShoppingCart"];
+                
+                if (guestCookieId == null)
+                {
+                    var options = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(7)
+                    };
+
+                    guestCookieId = Guid.NewGuid().ToString();
+                    Response.Cookies.Append("ShoppingCart", guestCookieId, options);
+                }
+                
+                var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.GuestCookieId == guestCookieId
+                                                                            && sc.ProductId == shoppingCartItem.ProductId);
+
+                if (shoppingCartItemFromDb != null)
+                    shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
+                else
+                {
+                    shoppingCartItem.GuestCookieId = guestCookieId;
+                    _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
+                }
             }
 
             _unitOfWork.Complete();

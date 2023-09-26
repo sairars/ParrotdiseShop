@@ -34,6 +34,7 @@
 								</div>
 								<div class="col-9">
 									<input asp-for="Order.Name" class="form-control" />
+									<span asp-validation-for="Order.Name" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -42,6 +43,7 @@
 								</div>
 								<div class="col-9">
 									<input asp-for="Order.PhoneNumber" class="form-control" />
+									<span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -50,6 +52,7 @@
 								</div>
 								<div class="col-9">
 									<input asp-for="Order.StreetAddress" class="form-control" />
+									<span asp-validation-for="Order.StreetAddress" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -58,6 +61,7 @@
 								</div>
 								<div class="col-9">
 									<input asp-for="Order.City" class="form-control" />
+									<span asp-validation-for="Order.City" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -68,6 +72,7 @@
 									<select asp-for="Order.Province" asp-items="@Model.Provinces" class="form-select">
 										<option disabled selected>Please select one</option>
 									</select>
+									<span asp-validation-for="Order.Province" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -76,6 +81,7 @@
 								</div>
 								<div class="col-9">
 									<input asp-for="Order.PostalCode" class="form-control" />
+									<span asp-validation-for="Order.PostalCode" class="text-danger"></span>
 								</div>
 							</div>
 						</div>
@@ -112,3 +118,9 @@
 		</div>
 		</div>
 </form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

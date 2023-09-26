@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
-using ParrotdiseShop.Core.Dtos;
+using ParrotdiseShop.Core.Models;
 using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
@@ -10,26 +8,54 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
     [Route("/customer/api/[controller]")]
     [ApiController]
     [Area("Customer")]
-    [Authorize]
     public class ShoppingCartItemsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public ShoppingCartItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ShoppingCartItemsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         
-        public IActionResult GetShoppingCartItems()
+        public IActionResult GetNoOfItemsInShoppingCart(bool justLoggedIn)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<ShoppingCartItem> shoppingCartItems;
 
-            var shoppingCartItems =  _unitOfWork.ShoppingCartItems.GetAllShoppingCartItemsWithProductsBy(userId);
+            if (User.Identity.IsAuthenticated)
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return Ok(_mapper.Map<IEnumerable<ShoppingCartItemDto>>(shoppingCartItems));
+                TransferGuestShoppingCartToCustomerAccount(userId);
+
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByUser(userId);
+            }
+            else
+            {
+                var guestCookieId = Request.Cookies["ShoppingCart"];
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
+            }
+
+            return Ok(shoppingCartItems.Count());
+        }
+
+        private void TransferGuestShoppingCartToCustomerAccount(string userId)
+        {
+            var guestCookieId = Request.Cookies["ShoppingCart"];
+
+            if (guestCookieId == null)
+                return;
+
+            var shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                        .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
+            foreach (var item in shoppingCartItems)
+                item.UpdateUserId(userId);
+
+            _unitOfWork.Complete();
+
+            Response.Cookies.Delete("ShoppingCart");
         }
     }
 }

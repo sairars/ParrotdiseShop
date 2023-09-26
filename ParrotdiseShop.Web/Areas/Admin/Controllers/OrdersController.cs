@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
+using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.ViewModels;
 
@@ -11,10 +13,12 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 	public class OrdersController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public OrdersController(IUnitOfWork unitOfWork)
+		public OrdersController(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 
 		public IActionResult Index()
@@ -29,10 +33,10 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 			if (order == null)
 				return NotFound();
 
-			var viewModel = new OrdersViewModel
-			{
-				Order = order,
-				OrderDetails = _unitOfWork.OrderDetails.GetOrderDetailsBy(id),
+			var viewModel = new OrderViewModel
+			{ 
+				Order = _mapper.Map<OrderDto>(order),
+				OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(_unitOfWork.OrderDetails.GetOrderDetailsWithProductBy(order.Id)),
 				Provinces = CanadianProvinces.Provinces
 			};
 
@@ -45,14 +49,16 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
-		public IActionResult UpdateCustomerInformation(OrdersViewModel viewModel)
+		public IActionResult UpdateCustomerInformation(OrderViewModel viewModel)
 		{
 			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
 
 			if (orderFromDb == null)
 				return NotFound();
 
-			orderFromDb.UpdateCustomerInformation(viewModel.Order);
+			var order = _mapper.Map<Order>(viewModel.Order);
+			orderFromDb.UpdateCustomerInformation(order);
+
 			_unitOfWork.Complete();
 
 			TempData["info"] = "Customer Information updated successfully";
@@ -63,7 +69,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
-		public IActionResult Process(OrdersViewModel viewModel)
+		public IActionResult Process(OrderViewModel viewModel)
 		{
 			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
 
@@ -78,7 +84,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
-		public IActionResult Ship(OrdersViewModel viewModel)
+		public IActionResult Ship(OrderViewModel viewModel)
 		{
 			var orderFromDb = _unitOfWork.Orders.Get(o => o.Id == viewModel.Order.Id);
 
