@@ -31,8 +31,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
 
                 shoppingCartItems = _unitOfWork.ShoppingCartItems
                                         .GetAllShoppingCartItemsWithProductsByUser(userId);
@@ -119,8 +118,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = User.GetUserId();
 
             TransferGuestShoppingCartToCustomerAccount(userId);
 
@@ -185,24 +183,14 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
         public IActionResult PlaceOrder(ShoppingCartViewModel viewModel)
         {
             IEnumerable<ShoppingCartItem> shoppingCartItems;
-            string? userId;
 
             if (User.Identity.IsAuthenticated)
-            {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
                 shoppingCartItems = _unitOfWork.ShoppingCartItems
-                                        .GetAllShoppingCartItemsWithProductsByUser(userId);
-            }
+                                        .GetAllShoppingCartItemsWithProductsByUser(User.GetUserId());
             else
-            {
-                userId = Request.Cookies["ShoppingCart"];
-
-                shoppingCartItems = _unitOfWork.ShoppingCartItems
-                                        .GetAllShoppingCartItemsWithProductsByCookie(userId);
-            }
-
+                        shoppingCartItems = _unitOfWork.ShoppingCartItems
+                                                .GetAllShoppingCartItemsWithProductsByCookie(Request.Cookies["ShoppingCart"]); 
+            
             if (!shoppingCartItems.Any())
                 return NotFound();
 
@@ -214,9 +202,9 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             var order = _mapper.Map<Order>(viewModel.Order);
             
             if (User.Identity.IsAuthenticated)
-                order.Create(userId, null, viewModel.Total);
+                order.Create(User.GetUserId(), null, viewModel.Total);
             else
-                order.Create(null, userId, viewModel.Total);
+                order.Create(null, Request.Cookies["ShoppingCart"], viewModel.Total);
 
             _unitOfWork.Orders.Add(order);
             _unitOfWork.Complete();

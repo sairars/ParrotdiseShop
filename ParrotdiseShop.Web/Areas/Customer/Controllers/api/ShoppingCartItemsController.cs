@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
@@ -23,9 +24,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
 
             if (User.Identity.IsAuthenticated)
             {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+                var userId = User.GetUserId();
                 TransferGuestShoppingCartToCustomerAccount(userId);
 
                 shoppingCartItems = _unitOfWork.ShoppingCartItems

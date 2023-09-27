@@ -31,8 +31,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 
 			if (User.IsInRole(RoleName.Customer))
 			{
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 
                 orders = _unitOfWork.Orders.GetUserOrdersBy(status, userId);
 			}

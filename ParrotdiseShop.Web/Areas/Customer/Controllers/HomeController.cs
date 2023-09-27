@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 using ParrotdiseShop.Core.ViewModels;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -74,8 +75,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
 
                 var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.UserId == userId
                                                                             && sc.ProductId == viewModel.ProductId);
