@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 using ParrotdiseShop.Core.ViewModels;
 using System.Reflection;
 
@@ -64,7 +65,6 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
                 return View("CategoryForm", viewModel);
 
             var categoryDto = viewModel.Category;
-
 
             if (categoryDto.Id == 0)
             {

@@ -27,7 +27,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             var products =  _unitOfWork.Products.GetProductsBy(categoryId);
 
-            var viewModel = new ProductsViewModel
+            var viewModel = new ProductViewModel
             {
                 Products = _mapper.Map<IEnumerable<ProductDto>>(products),
                 Categories = _mapper.Map<IEnumerable<CategoryDto>>(categories),
@@ -43,34 +43,34 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
             if (productFromDb == null)
                 return NotFound();
 
-            var shoppingCartItem = new ShoppingCartItem
+            var shoppingCartItemViewModel = new ShoppingCartItemViewModel
             {
-                Product = productFromDb,
+                Product = _mapper.Map<ProductDto>(productFromDb),
                 Quantity = 1,
                 ProductId = productFromDb.Id
             };
 
-            return View(shoppingCartItem);
+            return View(shoppingCartItemViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToCart(ShoppingCartItem shoppingCartItem)
+        public IActionResult AddToCart(ShoppingCartItemViewModel viewModel)
         {
-            var productFromDb = _unitOfWork.Products.GetProductWithCategory(shoppingCartItem.ProductId);
+            var productFromDb = _unitOfWork.Products.GetProductWithCategory(viewModel.ProductId);
 
             if (productFromDb == null)
                 return NotFound();
 
-            shoppingCartItem.Product = productFromDb;
+            viewModel.Product = _mapper.Map<ProductDto>(productFromDb);
 
-            if (shoppingCartItem.Product.UnitsInStock == 0)
+            if (viewModel.Product.UnitsInStock == 0)
                 ModelState.AddModelError("", "Item is out of stock");
-            else if (shoppingCartItem.Quantity > shoppingCartItem.Product.UnitsInStock)
+            else if (viewModel.Quantity > viewModel.Product.UnitsInStock)
                 ModelState.AddModelError("Quantity", "This item is running low on stock. Please reduce quantity.");
 
             if(!ModelState.IsValid)
-                return View(nameof(Details), shoppingCartItem);
+                return View(nameof(Details), viewModel);
 
             if (User.Identity.IsAuthenticated)
             {
@@ -78,14 +78,20 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.UserId == userId
-                                                                            && sc.ProductId == shoppingCartItem.ProductId);
+                                                                            && sc.ProductId == viewModel.ProductId);
 
                 if (shoppingCartItemFromDb != null)
-                    shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
+                    shoppingCartItemFromDb.Increment(viewModel.Quantity);
                 else
                 {
-                    shoppingCartItem.UserId = userId;
-                    shoppingCartItem.Created = DateTime.Now;
+                    var shoppingCartItem = new ShoppingCartItem
+                    {
+                        ProductId = viewModel.ProductId,
+                        Quantity = viewModel.Quantity,
+                        UserId = userId,
+                        Created = DateTime.Now
+                    };
+                    
                     _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
                 }
             }
@@ -105,14 +111,20 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 }
                 
                 var shoppingCartItemFromDb = _unitOfWork.ShoppingCartItems.Get(sc => sc.GuestCookieId == guestCookieId
-                                                                            && sc.ProductId == shoppingCartItem.ProductId);
+                                                                            && sc.ProductId == viewModel.ProductId);
 
                 if (shoppingCartItemFromDb != null)
-                    shoppingCartItemFromDb.Increment(shoppingCartItem.Quantity);
+                    shoppingCartItemFromDb.Increment(viewModel.Quantity);
                 else
                 {
-                    shoppingCartItem.GuestCookieId = guestCookieId;
-                    shoppingCartItem.Created = DateTime.Now;
+                    var shoppingCartItem = new ShoppingCartItem
+                    {
+                        ProductId = viewModel.ProductId,
+                        Quantity = viewModel.Quantity,
+                        GuestCookieId = guestCookieId,
+                        Created = DateTime.Now
+                    };
+
                     _unitOfWork.ShoppingCartItems.Add(shoppingCartItem);
                 }
             }

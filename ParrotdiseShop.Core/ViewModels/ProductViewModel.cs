@@ -2,7 +2,7 @@
 
 namespace ParrotdiseShop.Core.ViewModels
 {
-    public class ProductsViewModel
+    public class ProductViewModel
     {
         public IEnumerable<ProductDto> Products { get; set; }
         public IEnumerable<CategoryDto> Categories { get; set; }

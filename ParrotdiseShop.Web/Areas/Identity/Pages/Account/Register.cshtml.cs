@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 
 namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 {

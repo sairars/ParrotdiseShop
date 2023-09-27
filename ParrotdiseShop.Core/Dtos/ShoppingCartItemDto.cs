@@ -6,8 +6,6 @@ namespace ParrotdiseShop.Core.Dtos
     {
         public int Id { get; set; }
         public string GuestCookieId { get; set; }
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
         public int ProductId { get; set; }
         public ProductDto Product { get; set; }
         public int Quantity { get; set; }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 
 #nullable disable
 

@@ -17,7 +17,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
             _unitOfWork = unitOfWork;
         }
         
-        public IActionResult GetNoOfItemsInShoppingCart(bool justLoggedIn)
+        public IActionResult GetNoOfItemsInShoppingCart()
         {
             IEnumerable<ShoppingCartItem> shoppingCartItems;
 

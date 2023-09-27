@@ -24,11 +24,11 @@ namespace ParrotdiseShop.Core.Dtos
         public string Name { get; set; }
 
         public string GuestCookieId { get; set; }
-        
+
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
-        
+        public ApplicationUserDto User { get; set; }
+
         public DateTime CreationDate { get; set; }
         
         public decimal Total { get; set; }

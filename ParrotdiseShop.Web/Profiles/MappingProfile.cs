@@ -23,6 +23,9 @@ namespace ParrotdiseShop.Web.Profiles
 
             CreateMap<OrderDetail, OrderDetailDto>();
             CreateMap<OrderDetailDto, OrderDetail>().ForMember(o => o.Id, opt => opt.Ignore());
+
+            CreateMap<ApplicationUser, ApplicationUserDto>();
+            CreateMap<ApplicationUserDto, ApplicationUser>().ForMember(o => o.Id, opt => opt.Ignore());
         }
 
         public class CustomImageMapper : IValueResolver<ProductDto, Product, string>

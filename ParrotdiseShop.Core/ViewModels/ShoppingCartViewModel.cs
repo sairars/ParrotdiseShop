@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using ParrotdiseShop.Core.Dtos;
-using ParrotdiseShop.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParrotdiseShop.Core.ViewModels
 {

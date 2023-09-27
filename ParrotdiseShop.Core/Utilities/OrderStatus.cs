@@ -1,6 +1,6 @@
-﻿namespace ParrotdiseShop.Core.Models
+﻿namespace ParrotdiseShop.Core.Utilities
 {
-    public class OrderStatus
+    public static class OrderStatus
     {
         public const string StatusPending = "Pending";
         public const string StatusApproved = "Approved";
@@ -8,6 +8,6 @@
         public const string StatusShipped = "Shipped";
         public const string StatusCancelled = "Cancelled";
         public const string PaymentStatusPending = "PaymentPending";
-		public const string PaymentStatusApproved = "PaymentApproved";
-	}
+        public const string PaymentStatusApproved = "PaymentApproved";
+    }
 }
