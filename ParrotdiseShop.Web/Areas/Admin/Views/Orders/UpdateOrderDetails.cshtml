@@ -8,7 +8,7 @@
     <input asp-for="Order.Id" hidden />
     <div class="container">
         <div class="card shadow border-0 mt-4">
-            <div class="card-header bg-secondary bg-gradient text-light py-4">
+            <div class="card-header bg-info bg-gradient text-light py-4">
                 <div class="row">
                     <div class="col-12 text-center">
                         <h3 class="text-white text-uppercase">Order Summary</h3>
@@ -127,7 +127,7 @@
                                     <input asp-for="Order.PaymentStatus" type="text" class="form-control" disabled />
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-secondary text-uppercase form-control mt-2 nb-0" asp-controller="Orders" asp-action="UpdateCustomerInformation">Update Customer Information</button>
+                            <button type="submit" class="btn btn-warning text-uppercase form-control mt-2 nb-0" asp-controller="Orders" asp-action="UpdateCustomerInformation">Update Customer Information</button>
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
                             <h3 class="d-flex justify-content-between align-items-center mb-3">

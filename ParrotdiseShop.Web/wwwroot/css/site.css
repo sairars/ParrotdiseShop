@@ -23,6 +23,19 @@ body {
     border-radius: 5px;
 }
 
+.test {
+    text-align: center;
+} 
+
+.test img {
+    width: 25vw;
+    height: 25vw;
+}
+
+.test-contain img {
+    object-fit: contain;
+}
+
 /*bootstrap overrides*/
 a {
     color: rgba(64, 115, 18, var(--bs-link-opacity, 1));
@@ -92,7 +105,7 @@ button.accept-policy {
     background-color: #61b33b !important;
 }
 
-.bg-secondary {
+.bg-info {
     background-color: #009bb3 !important;
 }
 
@@ -110,12 +123,12 @@ button.accept-policy {
         border-color: #449448;
     }
 
-.btn-secondary {
+.btn-warning {
     border-color: #e8b415; 
     background-color: #e8b415;
 }
 
-    .btn-secondary:hover {
+    .btn-warning:hover {
         background-color: #dbab14;
         border-color: #dbab14;
     }
