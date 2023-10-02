@@ -30,7 +30,16 @@ let loadDataTable = function (container) {
                 data: 'name'
             },
             {
-                data: 'user.email'
+                /*if anonymous user: email is pulled from orders, 
+                otherwise pulled from user record*/
+                
+                data: null,
+                render: function (data) {
+                    if (data.user == null)
+                        return data.email;
+                    else
+                        return data.user.email;
+                }
             },
             {
                 data: 'phoneNumber'

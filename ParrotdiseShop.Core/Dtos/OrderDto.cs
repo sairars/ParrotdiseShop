@@ -23,6 +23,8 @@ namespace ParrotdiseShop.Core.Dtos
 
         public string Name { get; set; }
 
+        public string Email {  get; set; }
+
         public string GuestCookieId { get; set; }
 
         public string UserId { get; set; }

@@ -188,7 +188,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
                 shoppingCartItems = _unitOfWork.ShoppingCartItems
                                         .GetAllShoppingCartItemsWithProductsByUser(User.GetUserId());
             else
-                        shoppingCartItems = _unitOfWork.ShoppingCartItems
+                shoppingCartItems = _unitOfWork.ShoppingCartItems
                                                 .GetAllShoppingCartItemsWithProductsByCookie(Request.Cookies["ShoppingCart"]); 
             
             if (!shoppingCartItems.Any())

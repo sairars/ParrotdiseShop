@@ -93,6 +93,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 				return NotFound();
 
 			orderFromDb.UpdateShippingInformation(viewModel.Order.Carrier, viewModel.Order.TrackingNumber);
+			
 			_unitOfWork.Complete();
 
 			return RedirectToAction(nameof(Details), new { id = viewModel.Order.Id });

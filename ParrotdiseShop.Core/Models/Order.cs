@@ -25,6 +25,7 @@ namespace ParrotdiseShop.Core.Models
         public string Province { get; set; }
         public string PostalCode { get; set; }
         public string Name { get; set; }
+        public string?  Email { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; } = new Collection<OrderDetail>();
 
         public Order()
@@ -34,6 +35,7 @@ namespace ParrotdiseShop.Core.Models
         public Order(ApplicationUser customer)
         {
             Name = customer.Name;
+            Email = customer.Email;
             PhoneNumber = customer.PhoneNumber;
             City = customer.City;
             Province = customer.Province;

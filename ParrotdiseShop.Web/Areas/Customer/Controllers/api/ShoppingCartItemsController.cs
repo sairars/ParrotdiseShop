@@ -33,6 +33,7 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers.api
             else
             {
                 var guestCookieId = Request.Cookies["ShoppingCart"];
+
                 shoppingCartItems = _unitOfWork.ShoppingCartItems
                                         .GetAllShoppingCartItemsWithProductsByCookie(guestCookieId);
             }

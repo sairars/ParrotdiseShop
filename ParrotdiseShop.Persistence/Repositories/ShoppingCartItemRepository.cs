@@ -17,7 +17,8 @@ namespace ParrotdiseShop.Persistence.Repositories
         public IEnumerable<ShoppingCartItem> GetAllShoppingCartItemsWithProductsByCookie(string? guestcookieId)
         {
             return _context.ShoppingCartItems
-                        .Where(sc => sc.GuestCookieId == guestcookieId)
+                        .Where(sc => !string.IsNullOrWhiteSpace(guestcookieId) 
+                                        && sc.GuestCookieId == guestcookieId)
                         .Include(sc => sc.Product);
         }
 

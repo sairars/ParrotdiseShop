@@ -1,6 +1,7 @@
 ﻿@model ShoppingCartViewModel;
 @{
 	ViewData["Title"] = "Checkout";
+	var @disabled = (User.Identity.IsAuthenticated) ? true : false;
 }
 
 <form method="post" asp-action="PlaceOrder">
@@ -35,6 +36,15 @@
 								<div class="col-9">
 									<input asp-for="Order.Name" class="form-control" />
 									<span asp-validation-for="Order.Name" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="row my-1">
+								<div class="col-3">
+									<label asp-for="Order.Email">Email</label>
+								</div>
+								<div class="col-9">
+									<input asp-for="Order.Email" class="form-control" disabled=@disabled />
+									<span asp-validation-for="Order.Email" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">

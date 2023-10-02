@@ -30,4 +30,9 @@
     <ProjectReference Include="..\ParrotdiseShop.Persistence\ParrotdiseShop.Persistence.csproj" />
   </ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\images\parrots\" />
+	</ItemGroup>
+
 </Project>

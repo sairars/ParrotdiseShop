@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Order Details";
+    var @email = (Model.Order.User != null)
+                    ? Model.Order.User.Email
+                    : Model.Order.Email;
 }
 
 <form method="post">
@@ -82,7 +85,7 @@
                                     <span class="fw-bold">Email</span>
                                 </div>
                                 <div class="col-9">
-                                    <label>@Model.Order.User.Email</label>
+                                    <label>@email</label>
                                 </div>
                             </div>
                             <div class="row my-1">
