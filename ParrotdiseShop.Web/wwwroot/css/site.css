@@ -23,6 +23,12 @@ body {
     border-radius: 5px;
 }
 
+@media print {
+    .noprint {
+        display: none;
+    }
+}
+
 .test {
     text-align: center;
 } 
