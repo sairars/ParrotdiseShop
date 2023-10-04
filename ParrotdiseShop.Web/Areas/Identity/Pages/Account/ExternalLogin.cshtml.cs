@@ -1,22 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+using ParrotdiseShop.Core.Models;
+using ParrotdiseShop.Core.Utilities;
 
 namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 {
@@ -84,9 +81,31 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+			[Display(Name = "Full Name")]
+			public string Name { get; set; }
+
+			[Display(Name = "Street")]
+			public string StreetAddress { get; set; }
+
+			public string City { get; set; }
+
+			public string Province { get; set; }
+
+			public IEnumerable<SelectListItem>? Provinces { get; set; }
+
+			[Display(Name = "Postal Code")]
+			public string PostalCode { get; set; }
+
+			[Display(Name = "Phone Number")]
+			public string PhoneNumber { get; set; }
+		}
+
+        public IActionResult OnGet() 
+        { 
+
+            return RedirectToPage("./Login"); 
         }
-        
-        public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
@@ -127,13 +146,18 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+
+                Input = new InputModel
                 {
-                    Input = new InputModel
-                    {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                    };
-                }
+                    Provinces = CanadianProvinces.Provinces
+                };
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Name))
+                    Input.Name = info.Principal.FindFirstValue(ClaimTypes.Name);
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+                    Input.Email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
                 return Page();
             }
         }
@@ -156,7 +180,14 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
-                var result = await _userManager.CreateAsync(user);
+				user.Name = Input.Name;
+				user.PhoneNumber = Input.PhoneNumber;
+				user.StreetAddress = Input.StreetAddress;
+				user.City = Input.City;
+				user.Province = Input.Province;
+				user.PostalCode = Input.PostalCode;
+
+				var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
@@ -164,7 +195,9 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        var userId = await _userManager.GetUserIdAsync(user);
+						await _userManager.AddToRoleAsync(user, RoleName.Customer);
+
+						var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
@@ -192,21 +225,24 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 }
             }
 
+            // If we got this far, something failed, redisplay form
             ProviderDisplayName = info.ProviderDisplayName;
             ReturnUrl = returnUrl;
-            return Page();
+
+			Input.Provinces = CanadianProvinces.Provinces;
+			return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
             }
         }

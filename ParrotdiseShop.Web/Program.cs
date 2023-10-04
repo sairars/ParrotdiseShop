@@ -19,7 +19,13 @@ namespace ParrotdiseShop.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+			builder.Services.AddAuthentication().AddFacebook(options =>
+			{
+				options.AppId = builder.Configuration["Facebook:AppId"];
+				options.AppSecret = builder.Configuration["Facebook:AppSecret"];
+			});
+
+			builder.Services.AddDbContext<ApplicationDbContext>(options =>
                                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
            
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
