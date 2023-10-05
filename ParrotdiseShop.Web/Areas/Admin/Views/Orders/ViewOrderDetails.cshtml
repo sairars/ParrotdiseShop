@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Order Details";
-    var @email = (Model.Order.User != null)
+    var email = (Model.Order.User != null)
                     ? Model.Order.User.Email
                     : Model.Order.Email;
 }

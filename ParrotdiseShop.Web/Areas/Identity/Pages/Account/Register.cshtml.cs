@@ -182,7 +182,10 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(RoleName.Admin))
+                            TempData["success"] = "New user created successfully";
+                        else
+                            await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

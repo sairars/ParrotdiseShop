@@ -1,10 +1,16 @@
 ﻿@page
+@using ParrotdiseShop.Core.Utilities;
+
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    var pageTitle = (User.IsInRole(RoleName.Admin) 
+                        ? "Register - Admin Portal" 
+                        : "Register");
+
+    ViewData["Title"] = pageTitle;
 }
 
-<h1 class="pt-4 text-primary">@ViewData["Title"]</h1>
+<h1 class="pt-4 text-primary">@pageTitle</h1>
 
 <div class="row pt-4">
     <div class="col-md-6">
@@ -58,35 +64,44 @@
                 <label asp-for="Input.ConfirmPassword" class="mx-1 my-1"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-floating py-2 col-6 gx-1">
-                <select asp-for="Input.RoleName" asp-items="@Model.Input.Roles" class="form-select">
-                    <option selected value="0"> </option>
-                </select>
-                <label asp-for="Input.RoleName" class="mx-1 my-1"></label>
-            </div>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                <div class="form-floating py-2 col-6 gx-1">
+                    <select asp-for="Input.RoleName" asp-items="@Model.Input.Roles" class="form-select">
+                        <option selected value="0"> </option>
+                    </select>
+                    <label asp-for="Input.RoleName" class="mx-1 my-1"></label>
+                </div>
+            }
+            
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary text-uppercase">Register</button>
         </form>
     </div>
-    <div class="col-md-6">
-        <section class="ms-2">
-            <h2 class="mb-4 text-primary">Use another service to register.</h2>
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) != 0)
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-info" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Log In Using @provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
+
+    @if (!User.IsInRole(RoleName.Admin))
+    {
+        <div class="col-md-6">
+            <section class="ms-2">
+                <h2 class="mb-4 text-primary">Use another service to register.</h2>
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn btn-info" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Log In Using @provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
-    </div>
+            </section>
+        </div>
+    }
+
 </div>
 
 @section Scripts {

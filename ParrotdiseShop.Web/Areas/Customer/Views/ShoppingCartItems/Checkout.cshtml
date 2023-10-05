@@ -1,7 +1,7 @@
 ﻿@model ShoppingCartViewModel;
 @{
 	ViewData["Title"] = "Checkout";
-	var @disabled = (User.Identity.IsAuthenticated) ? true : false;
+	var disabled = (User.Identity.IsAuthenticated) ? true : false;
 }
 
 <form method="post" asp-action="PlaceOrder">
