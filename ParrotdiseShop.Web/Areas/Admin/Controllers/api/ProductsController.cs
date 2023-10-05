@@ -10,7 +10,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
     [Route("/admin/api/[controller]")]
     [ApiController]
     [Area("Admin")]
-    [Authorize(Roles = RoleName.Admin)]
+    [Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
     public class ProductsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -13,7 +13,7 @@ using System.Reflection;
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = RoleName.Admin)]
+    [Authorize(Roles = $"{RoleName.Admin},{RoleName.Employee}")]
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
