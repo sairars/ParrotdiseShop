@@ -68,7 +68,7 @@
             {
                 <div class="form-floating py-2 col-6 gx-1">
                     <select asp-for="Input.RoleName" asp-items="@Model.Input.Roles" class="form-select">
-                        <option selected value="0"> </option>
+                        <option disabled selected value="0"> </option>
                     </select>
                     <label asp-for="Input.RoleName" class="mx-1 my-1"></label>
                 </div>

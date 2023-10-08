@@ -93,7 +93,7 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Display(Name = "Role")]
-            public string RoleName { get; set; }
+            public string? RoleName { get; set; }
 
             public IEnumerable<SelectListItem>? Roles { get; set; }
 
@@ -158,10 +158,10 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var role = Input.RoleName.Equals("0")
-                                   ? RoleName.Customer
-                                   : Input.RoleName;
-                    
+                    var role = string.IsNullOrWhiteSpace(Input.RoleName) 
+                                ? RoleName.Customer 
+                                : Input.RoleName;
+
                     await _userManager.AddToRoleAsync(user, role);
 
                     var userId = await _userManager.GetUserIdAsync(user);
