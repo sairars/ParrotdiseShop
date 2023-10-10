@@ -6,6 +6,7 @@ using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.Utilities;
 using ParrotdiseShop.Persistence;
 using ParrotdiseShop.Persistence.Data;
+using ParrotdiseShop.Persistence.DbInitializer;
 using Stripe;
 
 namespace ParrotdiseShop.Web
@@ -37,8 +38,9 @@ namespace ParrotdiseShop.Web
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
-			builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 			builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -77,7 +79,16 @@ namespace ParrotdiseShop.Web
 
             app.MapRazorPages();
 
+            SeedDatabase(app);
+
             app.Run();
+        }
+
+        private static void SeedDatabase(WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            dbInitializer.Initialize();
         }
     }
 }
