@@ -7,7 +7,6 @@ using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.Utilities;
 using ParrotdiseShop.Core.ViewModels;
 using Stripe.Checkout;
-using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 {
@@ -224,11 +223,9 @@ namespace ParrotdiseShop.Web.Areas.Customer.Controllers
 
             _unitOfWork.Complete();
 
-			#region Stripe Settings
+            #region Stripe Settings
 
-			var domain = (_webHostEnvironment.IsDevelopment())
-									? "https://localhost:44372/"
-									: "";
+            var domain = @$"{Request.Scheme}://{Request.Host.Value}/";
 
 			var options = new SessionCreateOptions
 			{
