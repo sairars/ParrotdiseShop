@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace ParrotdiseShop.Core.Models
+namespace ParrotdiseShop.Core.Utilities
 {
     public class EmailSender : IEmailSender
     {
