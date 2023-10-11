@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ParrotdiseShop.Core.Models;
-
+using ParrotdiseShop.Persistence.EntityConfigurations;
 
 namespace ParrotdiseShop.Persistence.Data
 {
@@ -21,22 +21,8 @@ namespace ParrotdiseShop.Persistence.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Category>()
-                .Property(c => c.Name)
-                .HasMaxLength(100);
-
-            builder.Entity<Product>()
-                .Property(p => p.Name)
-                .HasMaxLength(50);
-
-            builder.Entity<Product>()
-                .Property(p => p.Description)
-                .HasMaxLength(1000);
-
-            builder.Entity<Product>()
-                .Property(p => p.SKU)
-                .HasMaxLength(20);
-
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
             base.OnModelCreating(builder);
         }
     }
