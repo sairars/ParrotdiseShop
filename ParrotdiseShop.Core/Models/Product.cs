@@ -1,18 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ParrotdiseShop.Core.Models
+﻿namespace ParrotdiseShop.Core.Models
 {
     public class Product
     {
         public int Id { get; set; }
 
-        [StringLength(50)]
         public string Name { get; set; }
 
-        [StringLength(1000)]
         public string Description { get; set; }
 
-        [StringLength(20)]
         public string? SKU { get; set; }
 
         public decimal UnitPrice { get; set; }

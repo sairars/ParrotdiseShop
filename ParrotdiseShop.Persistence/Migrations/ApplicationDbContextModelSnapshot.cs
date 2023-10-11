@@ -246,7 +246,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.Order", b =>
@@ -326,7 +326,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.OrderDetail", b =>
@@ -355,7 +355,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.Product", b =>
@@ -397,7 +397,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.ShoppingCartItem", b =>
@@ -429,7 +429,7 @@ namespace ParrotdiseShop.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCartItems");
+                    b.ToTable("ShoppingCartItems", (string)null);
                 });
 
             modelBuilder.Entity("ParrotdiseShop.Core.Models.ApplicationUser", b =>

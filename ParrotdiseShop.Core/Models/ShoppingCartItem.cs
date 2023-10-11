@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
-
-namespace ParrotdiseShop.Core.Models
+﻿namespace ParrotdiseShop.Core.Models
 {
     public class ShoppingCartItem
     {
