@@ -4,5 +4,6 @@ namespace ParrotdiseShop.Core.Repositories
 {
     public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
+        IEnumerable<ApplicationUser> GetAllUsersWithRole();
     }
 }

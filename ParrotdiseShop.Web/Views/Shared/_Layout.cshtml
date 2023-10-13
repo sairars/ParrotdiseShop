@@ -46,7 +46,8 @@
 
                                     @if (User.IsInRole(RoleName.Admin))
                                     {
-                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create New User</a>
+                                        @*<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create New User</a>*@
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="ApplicationUsers" asp-action="Index">Users</a>
                                     }
                                 </div>
                             </li>

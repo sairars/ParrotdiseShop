@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParrotdiseShop.Core.Models
 {
@@ -9,5 +10,8 @@ namespace ParrotdiseShop.Core.Models
         public string? City { get; set; }
         public string? Province { get; set; }
         public string? PostalCode { get; set; }
+
+        [NotMapped]
+        public string? Role { get; set; }
     }
 }

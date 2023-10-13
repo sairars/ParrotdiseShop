@@ -5,7 +5,6 @@ using ParrotdiseShop.Core;
 using ParrotdiseShop.Core.Dtos;
 using ParrotdiseShop.Core.Models;
 using ParrotdiseShop.Core.Utilities;
-using System.Security.Claims;
 
 namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 {
