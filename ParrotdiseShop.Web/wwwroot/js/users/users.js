@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     let container = $('#Users');
     loadDataTable(container);
-    container.on("click", ".js-delete", confirmDeleteUser);
+    container.on('click', '.js-lockunlock', confirmLockUnlock);
 });
 
 let loadDataTable = function (container) {
@@ -19,42 +19,67 @@ let loadDataTable = function (container) {
                 data: 'email'
             },
             {
-                data: "phoneNumber"
+                data: 'phoneNumber'
             },
             {
-                data: "role"
+                data: 'role'
+            },
+            {
+                data: null,
+                render: function (data) {
+                    let today = new Date().getTime();
+                    let lockoutEnd = new Date(data.lockoutEnd).getTime();
+
+                    let isLocked = lockoutEnd > today;
+
+                    if (!data.lockoutEnabled) {
+                        return;
+                    }
+
+                    if (isLocked) {
+                        return `<button class="btn btn-primary js-lockunlock" data-lock="unlock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-unlock"></i></button>`;
+                    }
+                    else {
+                        return `<button class="btn btn-danger js-lockunlock" data-lock="lock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-lock"></i></button>`;
+                    }
+                }
             }
         ]
     });
 };
 
-let confirmDeleteUser = function () {
+let confirmLockUnlock = function () {
+    let button = $(this);
+
+    let name = button.attr('data-user-name');
+    let lockUnlock = button.attr('data-lock');
+    
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: `Are you sure you want to ${lockUnlock} the user below`,
+        text: `${name} - ${id}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: `Yes, ${lockUnlock} the user`
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteUser($(this));
+            lockUnlockUser($(this));
         }
     })
 };
 
-let deleteUser = function (button) {
-    let categoryId = button.attr("data-user-id");
+let lockUnlockUser = function (button) {
+    let userId = button.attr('data-user-id');
     $.ajax({
-        url: "/admin/api/applicationusers/" + userId,
-        method: "DELETE"
+        url: '/admin/api/applicationusers/' + userId,
+        method: "POST"
     })
         .done(function (data) {
             table.ajax.reload();
-            toastr.success(data);
+            toastr.success("it was a success");
         })
         .fail(function (data) {
-            toastr.error(data);
+            toastr.error("there was an error");
         });
 }

@@ -36,16 +36,22 @@ namespace ParrotdiseShop.Persistence.Repositories
                                                 uidWithRoles => uidWithRoles.UserId,
                                                 (u, uidWithRoles) => new
                                                 {
+                                                    u.Id,
                                                     u.Name,
                                                     u.Email,
                                                     u.PhoneNumber,
+                                                    u.LockoutEnabled,
+                                                    u.LockoutEnd,
                                                     uidWithRoles
                                                 })
                                         .Select(au => new ApplicationUser()
                                         {
+                                            Id = au.Id,
                                             Name = au.Name,
                                             Email = au.Email,
                                             PhoneNumber = au.PhoneNumber,
+                                            LockoutEnabled = au.LockoutEnabled,
+                                            LockoutEnd = au.LockoutEnd,
                                             Role = au.uidWithRoles.RoleName
                                         });
 

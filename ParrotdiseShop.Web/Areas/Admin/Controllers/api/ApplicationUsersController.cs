@@ -28,5 +28,33 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 
             return Ok(_mapper.Map<IEnumerable<ApplicationUserDto>>(applicationUsers));
         }
+
+        [HttpPost("{id}")]
+        public IActionResult LockUnlock(string id)
+        {
+            var currentusersId = User.GetUserId();
+
+            // this api is only accessible by admin users
+            // logged in admin user cannot lock/unlock themselves
+            if (currentusersId.Equals(id))
+                return BadRequest();
+
+            var user = _unitOfWork.ApplicationUsers.Get(u => u.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            // cannot lock/unlock a user for which this setting is disabled
+            if (!user.LockoutEnabled)
+                return BadRequest();
+
+            user.LockoutEnd = (user.LockoutEnd > DateTime.Now) 
+                                ? DateTime.Now //unlock it
+                                : DateTime.Now.AddYears(1000); // lock it
+
+            _unitOfWork.Complete();
+
+            return Ok("Operation completed successfully");
+        }
     }
 }
