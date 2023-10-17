@@ -37,10 +37,10 @@ let loadDataTable = function (container) {
                     }
 
                     if (isLocked) {
-                        return `<button class="btn btn-primary js-lockunlock" data-lock="unlock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-unlock"></i></button>`;
+                        return `<button class="btn btn-danger js-lockunlock" data-lock="unlock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-lock"></i></button>`;
                     }
                     else {
-                        return `<button class="btn btn-danger js-lockunlock" data-lock="lock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-lock"></i></button>`;
+                        return `<button class="btn btn-primary js-lockunlock" data-lock="lock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-unlock"></i></button>`;
                     }
                 }
             }
@@ -56,7 +56,7 @@ let confirmLockUnlock = function () {
     
     Swal.fire({
         title: `Are you sure you want to ${lockUnlock} the user below`,
-        text: `${name} - ${id}`,
+        text: `${name}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -77,9 +77,9 @@ let lockUnlockUser = function (button) {
     })
         .done(function (data) {
             table.ajax.reload();
-            toastr.success("it was a success");
+            toastr.success(data);
         })
         .fail(function (data) {
-            toastr.error("there was an error");
+            toastr.error(data.responseText);
         });
 }

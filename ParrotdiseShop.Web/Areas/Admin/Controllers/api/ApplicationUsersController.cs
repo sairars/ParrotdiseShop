@@ -37,7 +37,7 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
             // this api is only accessible by admin users
             // logged in admin user cannot lock/unlock themselves
             if (currentusersId.Equals(id))
-                return BadRequest();
+                return BadRequest("Admin cannot lock their own account");
 
             var user = _unitOfWork.ApplicationUsers.Get(u => u.Id == id);
 
@@ -46,15 +46,13 @@ namespace ParrotdiseShop.Web.Areas.Admin.Controllers.api
 
             // cannot lock/unlock a user for which this setting is disabled
             if (!user.LockoutEnabled)
-                return BadRequest();
+                return BadRequest("Lock/unlock is unavailable for this user");
 
-            user.LockoutEnd = (user.LockoutEnd > DateTime.Now) 
-                                ? DateTime.Now //unlock it
-                                : DateTime.Now.AddYears(1000); // lock it
+            user.SetLockOutEnd();
 
             _unitOfWork.Complete();
 
-            return Ok("Operation completed successfully");
+            return Ok("Operation successful");
         }
     }
 }

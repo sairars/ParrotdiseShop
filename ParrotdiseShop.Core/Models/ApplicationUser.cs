@@ -13,5 +13,12 @@ namespace ParrotdiseShop.Core.Models
 
         [NotMapped]
         public string? Role { get; set; }
+
+        public void SetLockOutEnd()
+        {
+            LockoutEnd = (LockoutEnd > DateTime.Now)
+                                ? DateTime.Now //unlock it
+                                : DateTime.Now.AddYears(1000); // lock it
+        }
     }
 }
