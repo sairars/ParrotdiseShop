@@ -37,10 +37,10 @@ let loadDataTable = function (container) {
                     }
 
                     if (isLocked) {
-                        return `<button class="btn btn-danger js-lockunlock" data-lock="unlock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-lock"></i></button>`;
+                        return `<button data-toggle="tooltip" title="Click to unlock" class="btn btn-danger js-lockunlock" data-lock="unlock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-lock"></i></button>`;
                     }
                     else {
-                        return `<button class="btn btn-primary js-lockunlock" data-lock="lock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-unlock"></i></button>`;
+                        return `<button data-toggle="tooltip" title="Click to lock" class="btn btn-primary js-lockunlock" data-lock="lock" data-user-id="${data.id}" data-user-name="${data.name}"><i class="bi bi-unlock"></i></button>`;
                     }
                 }
             }

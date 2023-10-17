@@ -67,6 +67,6 @@ let deleteProduct = function (button) {
             toastr.success(data);
         })
         .fail(function (data) {
-            toastr.error(data);
+            toastr.error(data.responseText);
         });
 }

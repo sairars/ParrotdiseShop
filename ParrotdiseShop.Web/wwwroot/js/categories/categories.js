@@ -57,7 +57,7 @@ let deleteCategory = function (button) {
             table.ajax.reload();
             toastr.success(data);
         })
-        .fail(function (data) {
+        .fail(function (data.responseText) {
             toastr.error(data);
         });
 }
