@@ -24,7 +24,7 @@ let loadDataTable = function (container) {
             {
                 data: "id",
                 render: function (data) {
-                    return `<button class="btn btn-danger js-delete" data-category-id="${data}"><i class="bi bi-trash me-2"></i></button>`;
+                    return `<button data-toggle="tooltip" title="Click to delete" class="btn btn-danger js-delete" data-category-id="${data}"><i class="bi bi-trash me-2"></i></button>`;
                 }
             }
         ]
@@ -57,7 +57,7 @@ let deleteCategory = function (button) {
             table.ajax.reload();
             toastr.success(data);
         })
-        .fail(function (data.responseText) {
-            toastr.error(data);
+        .fail(function (data) {
+            toastr.error(data.responseText);
         });
 }
