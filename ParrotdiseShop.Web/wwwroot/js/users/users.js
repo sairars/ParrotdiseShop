@@ -33,7 +33,7 @@ let loadDataTable = function (container) {
                     let isLocked = lockoutEnd > today;
 
                     if (!data.lockoutEnabled) {
-                        return;
+                        return "";
                     }
 
                     if (isLocked) {

@@ -93,7 +93,7 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Display(Name = "Role")]
-            public string? RoleName { get; set; }
+            public string RoleName { get; set; }
 
             public IEnumerable<SelectListItem>? Roles { get; set; }
 
@@ -123,14 +123,9 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
 
             Input = new InputModel
             {
-                Roles = _roleManager.Roles
-                            .Select(r => new SelectListItem 
-                            {
-                                Text = r.Name, 
-                                Value = r.Name 
-                            }),
+                Roles = GetStaffOnlyRoles(),
                 Provinces = CanadianProvinces.Provinces
-		    };
+            };
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
@@ -158,11 +153,7 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var role = string.IsNullOrWhiteSpace(Input.RoleName) 
-                                ? RoleName.Customer 
-                                : Input.RoleName;
-
-                    await _userManager.AddToRoleAsync(user, role);
+                    await _userManager.AddToRoleAsync(user, Input.RoleName);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -195,13 +186,8 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            Input.Roles = _roleManager.Roles
-                            .Select(r => new SelectListItem
-                            {
-                                Text = r.Name,
-                                Value = r.Name
-                            });
+            // If we got here, something failed, so redisplay form
+            Input.Roles = GetStaffOnlyRoles();
             Input.Provinces = CanadianProvinces.Provinces;
 
             return Page();
@@ -228,6 +214,19 @@ namespace ParrotdiseShop.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private IQueryable<SelectListItem>? GetStaffOnlyRoles()
+        {
+            if (!User.IsInRole(RoleName.Admin))
+                return null;
+            return _roleManager.Roles
+                                        .Where(r => r.Name != RoleName.Customer)
+                                        .Select(r => new SelectListItem
+                                        {
+                                            Text = r.Name,
+                                            Value = r.Name
+                                        });
         }
     }
 }
