@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     let container = $('#Products');
     loadDataTable(container);
     container.on("click", ".js-delete", confirmDeleteProduct);

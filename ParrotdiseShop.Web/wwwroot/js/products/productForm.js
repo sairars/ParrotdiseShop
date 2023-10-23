@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     $("#productForm").on("click", ".js-validate-upload", validateFileUpload);
 });
 

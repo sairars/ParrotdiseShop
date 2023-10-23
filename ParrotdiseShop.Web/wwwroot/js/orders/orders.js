@@ -1,12 +1,10 @@
-﻿$(document).ready(function () {
-
+﻿$(function () {
     let container = $('#Orders');
   
     loadDataTable(container);
 });
 
 let loadDataTable = function (container) {
-
     let href = $(location).attr('href');
     let selectedStatus = new URL(href).searchParams.get('status');
 

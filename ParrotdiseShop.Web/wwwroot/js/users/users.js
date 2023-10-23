@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     let container = $('#Users');
     loadDataTable(container);
     container.on('click', '.js-lockunlock', confirmLockUnlock);
