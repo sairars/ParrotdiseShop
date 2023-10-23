@@ -10,10 +10,6 @@
 - [Project Installation Requirements](#project-installation-requirements)
 - [Demo Website](#demo-website)
 
-
-
-
-
 ## About this project
 
 This project was developed to document my journey of learning ASP.Net Core and to refresh my skills as a .Net Developer. It is an e-commerce web application that allows customers to make online purchases of parrot toys and treats. It features CRUD functionality to manage product inventory, system users and order processing. 
@@ -77,5 +73,8 @@ There are three types of users that can access the application:
   **Username:** admin@parrotdise.com
  
   **Password:** ParrotdiseAdmin123#!
+
+  ### Sample Product Images
+   Can be found [here](https://github.com/sairars/ParrotdiseShop/tree/main/Product%20Images)
 
 
