@@ -32,7 +32,7 @@ let loadDataTable = function (container) {
             {
                 /*if anonymous user: email is pulled from orders, 
                 otherwise pulled from user record*/
-                
+
                 data: null,
                 render: function (data) {
                     if (data.user == null)
@@ -48,7 +48,10 @@ let loadDataTable = function (container) {
                 data: 'status'
             },
             {
-                data: 'total'
+                data: 'total',
+                render: function(data) {
+                    return `\$${data}`;
+                }
             }
         ]
     });
