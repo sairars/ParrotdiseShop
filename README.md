@@ -77,4 +77,9 @@ There are three types of users that can access the application:
   ### Sample Product Images
    Can be found [here](https://github.com/sairars/ParrotdiseShop/tree/main/Product%20Images)
 
+## Credits
+- [.Net Core MVC Course By Bhrugen Patel](https://www.udemy.com/share/101uZQ/)
+- [Asp.Net MVC 5 Course By Mosh Hamedani](https://codewithmosh.com/p/asp-net-mvc)
+- [Entity Framework Course By Mosh Hamedani](https://codewithmosh.com/p/entity-framework)
+- [Introduction to Asp.Net Core - LinkedInLearning](https://www.linkedin.com/learning-login/share?forceAccount=false&redirect=https%3A%2F%2Fwww.linkedin.com%2Flearning%2Fintroducing-asp-dot-net-core%3Ftrk%3Dshare_ent_url%26shareId%3DVfq6nkVKSFeJVGdO1N4aYA%253D%253D)
 
