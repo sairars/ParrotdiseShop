@@ -1,4 +1,4 @@
-# ParrotdiseShop - Demo E-commerce Web Application built using ASP.Net Core 6 - MVC and Web API
+# ParrotdiseShop - E-commerce Web Application built using ASP.Net Core 6 - MVC and Web API
 
 ## Table Of Contents
 - [About this project](#about-this-project)
