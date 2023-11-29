@@ -1,3 +1,15 @@
+<p align="center">	
+   <a href="https://www.linkedin.com/in/saira-rashid1216/">
+      <img alt="Saira Rashid" src="https://img.shields.io/badge/Saira Rashid-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+   </a>
+   <a href="https://parrotdiseshop.azurewebsites.net">
+       <img alt="Parrotdise Shop" src="https://img.shields.io/badge/parrotdiseshop-03C04A?style=for-the-badge&logo=&logoColor=white" />
+   </a>
+   <a href="mailto:saira.rashid1216@gmail.com">
+       <img alt="Saira Rashid Email" src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+   </a>
+</p>
+
 # ParrotdiseShop - E-commerce Web Application built using ASP.Net Core 6 - MVC and Web API
 
 ## Table Of Contents
