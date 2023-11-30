@@ -15,6 +15,7 @@
 ## Table Of Contents
 - [About this project](#about-this-project)
 - [Key Features/Concepts Covered/Things Learned](#key-featuresconcepts-coveredthings-learned)
+- [Project Design Diagrams](#project-design-diagrams)
 - [Project Details](#project-details)
     - [Customer use-cases](#customer-use-cases)
     - [Employee use-cases](#employee-use-cases)
