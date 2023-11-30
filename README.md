@@ -46,6 +46,10 @@ On the front-end side, currently it uses jquery. Eventually, as I acquire new sk
 - Fluent APIs
 - To ensure clear separation of concerns, I employed Dtos and used AutoMapper library
 
+## Project Design Diagrams
+
+![High Level Design](designdocuments/HighLevelDesign.png)
+
 ## Project Details
 There are three types of users that can access the application:
     1. Admin (highest level of permissions)
