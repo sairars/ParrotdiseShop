@@ -51,6 +51,11 @@ On the front-end side, currently it uses jquery. Eventually, as I acquire new sk
 
 ![High Level Design](designdocuments/HighLevelDesign.png)
 
+***
+
+![High Level Design](<designdocuments/ER Diagram.png>)
+
+
 ## Project Details
 There are three types of users that can access the application:
     1. Admin (highest level of permissions)
